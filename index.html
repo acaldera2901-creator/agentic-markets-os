@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Agentic Markets OS</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <section class="brand">
+          <span class="live-dot"></span>
+          <div>
+            <p>Prediction Markets Command Center</p>
+            <h1>Agentic Markets OS</h1>
+          </div>
+        </section>
+        <nav class="nav">
+          <a href="#overview">Overview</a>
+          <a href="#desks">Live Desks</a>
+          <a href="#ops">Ops</a>
+          <a href="#risk">Risk</a>
+          <a href="#markets">Markets</a>
+        </nav>
+        <section class="status-strip">
+          <div><span>Football</span><strong id="sportsStatus">--</strong></div>
+          <div><span>Crypto</span><strong id="cryptoStatus">--</strong></div>
+          <div><span>Data Layer</span><strong id="storageStatus">--</strong></div>
+          <button id="refreshBtn" type="button">Refresh</button>
+        </section>
+      </header>
+
+      <main>
+        <section id="overview" class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Unified Dashboard</p>
+            <h2>Football betting and meme coin order-flow in one control room.</h2>
+            <p>
+              Questa è la dashboard madre: oggi controlla calcio e crypto, domani aggiunge
+              Polymarket, tennis, NBA, F1, macro events e altri mercati di prediction. Ogni
+              desk mantiene il proprio motore, ma passa dentro monitoraggio, rischio e ricerca comuni.
+            </p>
+          </div>
+          <div class="capital-card ops-card">
+            <span>OS Status</span>
+            <strong id="osStatus">SYNC</strong>
+            <p id="osStatusDetail">Aggregazione live da Sports Desk, Crypto Desk, optimizer e database.</p>
+            <div class="score-rail">
+              <span>System Score</span>
+              <div><i id="systemScoreBar"></i></div>
+              <strong id="systemScore">--/100</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="kpi-row">
+          <div><span>Active Desks</span><strong>2</strong><em>Football + Crypto</em></div>
+          <div><span>Football Agents</span><strong id="sportsAgents">--</strong><em>Heartbeat health</em></div>
+          <div><span>Crypto Risk Mode</span><strong id="riskMode">--</strong><em>Adaptive optimizer</em></div>
+          <div><span>Crypto Samples</span><strong id="researchSamples">--</strong><em>Internal dataset</em></div>
+          <div><span>Next Markets</span><strong>6</strong><em>Roadmap modules</em></div>
+        </section>
+
+        <section id="desks" class="desk-grid">
+          <article class="panel desk-card sports">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Live Desk 01</p>
+                <h3>Football Betting</h3>
+              </div>
+              <span id="sportsBadge">CHECKING</span>
+            </div>
+            <p class="desk-text">
+              Motore betting calcistico: Betfair Exchange, Dixon-Coles, Pi Rating, xG,
+              conformal intervals, Kelly frazionato, paper/live gate e settlement.
+            </p>
+            <div class="metric-grid">
+              <div><span>Agent Health</span><strong id="sportsHealth">--</strong></div>
+              <div><span>Bets</span><strong id="sportsBets">--</strong></div>
+              <div><span>PnL</span><strong id="sportsPnl">--</strong></div>
+              <div><span>Mode</span><strong id="sportsMode">Paper Gate</strong></div>
+            </div>
+            <div class="link-row">
+              <a href="https://agentic-markets-roan.vercel.app" target="_blank" rel="noreferrer">Open Football Desk</a>
+              <a href="https://agentic-markets-roan.vercel.app/api/health" target="_blank" rel="noreferrer">Agent Health</a>
+            </div>
+          </article>
+
+          <article class="panel desk-card crypto">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Live Desk 02</p>
+                <h3>Meme Coin & BTC</h3>
+              </div>
+              <span id="cryptoBadge">CHECKING</span>
+            </div>
+            <p class="desk-text">
+              Motore crypto: DexScreener Solana launch scanner, BTCUSDT order-flow paper
+              agent, dataset Upstash, missed-winner analysis e optimizer persistente.
+            </p>
+            <div class="metric-grid">
+              <div><span>BTC Cycles</span><strong id="btcCycles">--</strong></div>
+              <div><span>Optimizer</span><strong id="optimizerMode">--</strong></div>
+              <div><span>Observations</span><strong id="cryptoObservations">--</strong></div>
+              <div><span>BTC Position</span><strong id="btcPosition">--</strong></div>
+            </div>
+            <div class="link-row">
+              <a href="https://meme-coin-control-center.vercel.app" target="_blank" rel="noreferrer">Open Crypto Desk</a>
+              <a href="https://meme-coin-control-center.vercel.app/api/optimizer" target="_blank" rel="noreferrer">Optimizer</a>
+            </div>
+          </article>
+        </section>
+
+        <section id="ops" class="ops-grid">
+          <article class="panel alerts-panel">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Operations</p>
+                <h3>Live Exceptions</h3>
+              </div>
+              <span id="alertsBadge">Scanning</span>
+            </div>
+            <div id="alertsList" class="alerts-list">
+              <div class="empty-state">Waiting for live status.</div>
+            </div>
+          </article>
+
+          <article class="panel pipeline-panel">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Market Factory</p>
+                <h3>Desk Launch Pipeline</h3>
+              </div>
+              <span>Standard</span>
+            </div>
+            <div class="pipeline">
+              <div><strong>01</strong><span>Data Source</span><em>API, exchange, feed, crawler</em></div>
+              <div><strong>02</strong><span>Model Layer</span><em>Forecast, edge, uncertainty</em></div>
+              <div><strong>03</strong><span>Execution</span><em>Paper, sizing, slippage</em></div>
+              <div><strong>04</strong><span>Risk Gate</span><em>Caps, drawdown, kill switch</em></div>
+              <div><strong>05</strong><span>Settlement</span><em>Outcome, PnL, learning loop</em></div>
+            </div>
+          </article>
+        </section>
+
+        <section id="risk" class="panel command-center">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Shared Operating Layer</p>
+              <h3>Risk & Discipline Center</h3>
+            </div>
+            <span id="disciplineBadge">Unified</span>
+          </div>
+          <div class="risk-grid">
+            <div>
+              <h4>Regole Comuni</h4>
+              <ul>
+                <li>Paper-first finché il track record forward non è leggibile.</li>
+                <li>Ogni desk produce log, outcome, agent health e configurazione risk.</li>
+                <li>Il rischio non è copiato tra mercati: è normalizzato e confrontabile.</li>
+                <li>Gli optimizer possono stringere automaticamente; aprono solo con edge pulito.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Desk Specifici</h4>
+              <ul>
+                <li>Calcio: Kelly frazionato, exposure cap, completeness gate, drawdown lock.</li>
+                <li>Crypto: size 5-10%, EV gate adattivo, stop-loss reverse engineering.</li>
+                <li>Futuri mercati: ogni nuovo desk deve avere data source, model, risk gate e settlement.</li>
+                <li>La dashboard OS mostra stato, priorità e anomalie senza entrare nel dettaglio di ogni motore.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="research" class="panel research-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Learning Loop</p>
+              <h3>Research & Optimizer Status</h3>
+            </div>
+            <span id="researchBadge">Auto-improving</span>
+          </div>
+          <div class="research-grid">
+            <div><span>Crypto Readiness</span><strong id="cryptoReadiness">--</strong></div>
+            <div><span>Clean Missed</span><strong id="cleanMissed">--</strong></div>
+            <div><span>Bad Entries</span><strong id="badEntries">--</strong></div>
+            <div><span>Football Heartbeat</span><strong id="sportsHeartbeat">--</strong></div>
+          </div>
+          <p id="optimizerRationale" class="rationale">Waiting for optimizer.</p>
+        </section>
+
+        <section id="markets" class="panel future-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Prediction Markets Pipeline</p>
+              <h3>Markets To Add Next</h3>
+            </div>
+            <span>Modules</span>
+          </div>
+          <div class="future-grid">
+            <div><strong>Polymarket</strong><span id="market-polymarket">Politics, crypto, macro events, protocol launches</span></div>
+            <div><strong>Tennis</strong><span id="market-tennis">Serve/return models, live momentum, injury/news flow</span></div>
+            <div><strong>NBA</strong><span id="market-nba">Player impact, totals, injuries, line movement</span></div>
+            <div><strong>F1 / MotoGP</strong><span>Qualifying, weather, grid, reliability factors</span></div>
+            <div><strong>Macro Events</strong><span id="market-macro">CPI, rates, elections, Fed pricing, crypto correlation</span></div>
+            <div><strong>Poker / Casino AI</strong><span>Decision engines, bankroll simulation, exploit detection</span></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
