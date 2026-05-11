@@ -126,22 +126,12 @@ module.exports = async function handler(req, res) {
     sportsOk && cryptoOk                  ? "DEGRADED" :
     sportsOk || cryptoOk                  ? "PARTIAL"  : "OFFLINE";
 
-  /* ── Market roadmap ──────────────────────────── */
+  /* ── Market roadmap (ids match HTML market-{id}) ── */
   const markets = [
-    {
-      id: "football",
-      status: sportsOk ? "live" : "offline",
-      score: sportsOk ? systemScore : 0,
-      priority: "primary",
-    },
-    {
-      id: "crypto",
-      status: cryptoOk ? "live" : "offline",
-      score: cryptoOk ? Math.round((optDiag.readiness ?? 0)) : 0,
-      priority: "secondary",
-    },
-    { id: "polymarket", status: "planned", score: 0,  priority: "high" },
-    { id: "tennis",     status: "planned", score: 0,  priority: "medium" },
+    { id: "polymarket", status: "planned", score: 0, priority: "high" },
+    { id: "tennis",     status: "planned", score: 0, priority: "medium" },
+    { id: "nba",        status: "planned", score: 0, priority: "medium" },
+    { id: "macro",      status: "planned", score: 0, priority: "low" },
   ];
 
   res.setHeader(
