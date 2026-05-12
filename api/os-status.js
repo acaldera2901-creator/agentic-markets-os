@@ -101,6 +101,7 @@ module.exports = async function handler(req, res) {
   const agentList = (health?.agents ?? []).map(a => ({
     name: a.name,
     status: a.status,
+    age_seconds: a.age_seconds ?? null,
   }));
   const alive   = agentList.filter(a => a.status === "alive").length;
   const total   = agentList.length || 9;

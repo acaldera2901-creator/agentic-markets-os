@@ -50,7 +50,13 @@ function renderAgentDots(agents) {
 
     const tip = document.createElement("div");
     tip.className = "agent-tip";
-    tip.textContent = a.name;
+    if (a.status !== "alive" && a.age_seconds != null) {
+      const h = Math.floor(a.age_seconds / 3600);
+      const m = Math.floor((a.age_seconds % 3600) / 60);
+      tip.textContent = `${a.name} (${h > 0 ? h + "h " : ""}${m}m ago)`;
+    } else {
+      tip.textContent = a.name;
+    }
 
     wrap.appendChild(dot);
     wrap.appendChild(tip);
