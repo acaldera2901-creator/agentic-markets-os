@@ -109,6 +109,7 @@ module.exports = async function handler(req, res) {
   /* ── Sports summary ──────────────────────────── */
   const betsPlaced  = history?.stats?.bets_placed    ?? 0;
   const totalReturn = Number(history?.stats?.total_return ?? 0);
+  const sportsMode  = health?.mode ?? "paper";
   const sportsHealth = health?.status === "ok" ? "ok"
     : offline > 0 ? "degraded" : "warning";
 
@@ -148,6 +149,7 @@ module.exports = async function handler(req, res) {
       health: sportsHealth,
       agents: { alive, total, offline },
       summary: { total_bets: betsPlaced, pnl: totalReturn },
+      mode: sportsMode,
       agentList,
     },
 

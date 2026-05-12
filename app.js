@@ -97,6 +97,7 @@ function renderSportsDesk(sports) {
   setFlash("sportsPnl",     fmtPnl(s.pnl));
   setFlash("kpiPnl",        fmtPnl(s.pnl));
 
+  setFlash("sportsMode", sports.mode || "paper");
   if (Array.isArray(sports.agentList)) renderAgentDots(sports.agentList);
 }
 
@@ -158,6 +159,13 @@ function renderOsStatus(status) {
   set("osStatusDetail",
     `Football ${alive}/${total} agents · Crypto ${cryptoOk ? "online" : "offline"} · Storage ${storage}`
   );
+
+  const dBadge = $("disciplineBadge");
+  if (dBadge) {
+    const unified = sportsOk && cryptoOk;
+    dBadge.textContent = unified ? "Unified" : "Split";
+    dBadge.className = "chip " + (unified ? "chip-green" : "chip-amber");
+  }
 
   setFlash("systemScore",       `${score}/100`);
   setFlash("systemScoreHeader", `${score}/100`);
