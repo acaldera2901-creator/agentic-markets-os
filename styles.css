@@ -448,7 +448,7 @@ body::before {
   margin: 0 auto;
   padding: 0 24px;
   display: grid;
-  grid-template-columns: repeat(6,1fr);
+  grid-template-columns: repeat(7,1fr);
 }
 
 .kpi {
@@ -1194,10 +1194,9 @@ body::before {
 /* ── RESPONSIVE ───────────────────────────────────────────────── */
 @media (max-width: 1200px) {
   .roadmap-grid { grid-template-columns: repeat(3,1fr); }
-  .kpi-band-inner { grid-template-columns: repeat(3,1fr); }
-  .kpi:nth-child(3) { border-right: none; }
-  .kpi:nth-child(4) { border-right: 1px solid var(--b0); }
-  .kpi:nth-child(6) { border-right: none; }
+  .kpi-band-inner { grid-template-columns: repeat(4,1fr); }
+  .kpi:nth-child(4) { border-right: none; }
+  .kpi:nth-child(8) { border-right: none; }
 }
 
 @media (max-width: 1000px) {
@@ -1211,9 +1210,6 @@ body::before {
 @media (max-width: 760px) {
   .header-status { display: none; }
   .kpi-band-inner { grid-template-columns: repeat(2,1fr); }
-  .kpi:nth-child(3) { border-right: none; }
-  .kpi:nth-child(4) { border-right: 1px solid var(--b0); }
-  .kpi:nth-child(2) { border-right: 1px solid var(--b0); }
   .kpi:nth-child(even) { border-right: none !important; }
   .roadmap-grid { grid-template-columns: repeat(2,1fr); }
   .desk-metrics { grid-template-columns: repeat(2,1fr); }
