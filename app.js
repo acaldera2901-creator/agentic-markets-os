@@ -118,9 +118,6 @@ function renderCryptoDesk(crypto) {
   $("cryptoStatus") && ($("cryptoStatus").className = "hstat-val positive");
   setBadge("cryptoBadge", "online");
 
-  set("storageStatus",        crypto.storage?.provider || "unknown");
-  setFlash("riskMode",        config.mode || "adaptive");
-  setFlash("researchSamples", String(obs));
   setFlash("btcCycles",       String(btc.cycles ?? "—"));
   setFlash("optimizerMode",   config.mode || "—");
   setFlash("cryptoObservations", String(obs));
