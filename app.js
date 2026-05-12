@@ -100,6 +100,7 @@ function renderSportsDesk(sports) {
   set("kpiAgentsSub",       h.offline ? `${h.offline} offline` : "all active");
   setFlash("sportsBets",       String(s.total_bets ?? 0));
   setFlash("kpiBets",          String(s.total_bets ?? 0));
+  set("kpiBetsSub",            s.pending_bets ? `${s.pending_bets} pending` : "settled");
   setFlash("kpiPredictions",   String(s.predictions ?? 0));
   setFlash("sportsPnl",     fmtPnl(s.pnl));
   setFlash("kpiPnl",        fmtPnl(s.pnl));

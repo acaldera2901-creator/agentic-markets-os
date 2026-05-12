@@ -87,10 +87,11 @@ module.exports = async function handler(req, res) {
   }
 
   /* ── Parallel fetch from both desks ──────────── */
-  const [health, preds, history, opt] = await Promise.all([
+  const [health, preds, history, betData, opt] = await Promise.all([
     safeFetch(`${SPORTS_URL}/api/health`),
     safeFetch(`${SPORTS_URL}/api/predictions`),
     safeFetch(`${SPORTS_URL}/api/history`),
+    safeFetch(`${SPORTS_URL}/api/data`),
     safeFetch(`${CRYPTO_URL}/api/optimizer`),
   ]);
 
@@ -108,8 +109,10 @@ module.exports = async function handler(req, res) {
   const offline = agentList.filter(a => a.status === "offline").length;
 
   /* ── Sports summary ──────────────────────────── */
-  const betsPlaced  = history?.stats?.bets_placed    ?? 0;
+  // Prefer /api/data for active bets; /api/history for settled P&L
+  const betsPlaced  = betData?.summary?.total_bets ?? history?.stats?.bets_placed ?? 0;
   const totalReturn = Number(history?.stats?.total_return ?? 0);
+  const betsPending = betData?.summary?.pending ?? 0;
   const sportsMode  = health?.mode ?? "paper";
   const sportsHealth = health?.status === "ok" ? "ok"
     : offline > 0 ? "degraded" : "warning";
@@ -149,7 +152,7 @@ module.exports = async function handler(req, res) {
       ok: sportsOk,
       health: sportsHealth,
       agents: { alive, total, offline },
-      summary: { total_bets: betsPlaced, pnl: totalReturn, predictions: preds?.count ?? 0 },
+      summary: { total_bets: betsPlaced, pending_bets: betsPending, pnl: totalReturn, predictions: preds?.count ?? 0 },
       mode: sportsMode,
       agentList,
     },
