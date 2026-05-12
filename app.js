@@ -92,8 +92,9 @@ function renderSportsDesk(sports) {
   setFlash("sportsAgents",  `${h.alive ?? 0}/${h.total ?? 0}`);
   setFlash("kpiAgents",     `${h.alive ?? 0}/${h.total ?? 0}`);
   set("kpiAgentsSub",       h.offline ? `${h.offline} offline` : "all active");
-  setFlash("sportsBets",    String(s.total_bets ?? 0));
-  setFlash("kpiBets",       String(s.total_bets ?? 0));
+  setFlash("sportsBets",       String(s.total_bets ?? 0));
+  setFlash("kpiBets",          String(s.total_bets ?? 0));
+  setFlash("kpiPredictions",   String(s.predictions ?? 0));
   setFlash("sportsPnl",     fmtPnl(s.pnl));
   setFlash("kpiPnl",        fmtPnl(s.pnl));
 

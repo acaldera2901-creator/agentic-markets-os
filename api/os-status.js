@@ -148,7 +148,7 @@ module.exports = async function handler(req, res) {
       ok: sportsOk,
       health: sportsHealth,
       agents: { alive, total, offline },
-      summary: { total_bets: betsPlaced, pnl: totalReturn },
+      summary: { total_bets: betsPlaced, pnl: totalReturn, predictions: preds?.count ?? 0 },
       mode: sportsMode,
       agentList,
     },
