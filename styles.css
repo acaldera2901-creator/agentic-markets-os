@@ -571,6 +571,11 @@ body::before {
   background: radial-gradient(ellipse at top left, rgba(74,222,128,.06), transparent 60%);
 }
 
+.desk-amber { border-left: 2px solid var(--a); }
+.desk-amber::before {
+  background: radial-gradient(ellipse at top left, rgba(251,191,36,.06), transparent 60%);
+}
+
 .desk-top {
   display: flex;
   justify-content: space-between;
@@ -833,6 +838,8 @@ body::before {
 
 .desk-btn-green { color: var(--g); }
 .desk-btn-green:hover { background: var(--gg); border-color: rgba(74,222,128,.35); }
+.desk-btn-amber { color: var(--a); }
+.desk-btn-amber:hover { background: var(--ag); border-color: rgba(251,191,36,.35); }
 
 .desk-btn-dim { color: var(--tx2); font-size: 12px; }
 .desk-btn-dim:hover { color: var(--tx); }
@@ -1250,4 +1257,258 @@ body::before {
   .footer { flex-direction: column; text-align: center; gap: 8px; }
   .roadmap-grid { grid-template-columns: 1fr; }
   .h-time { display: none; }
+}
+
+/* ── AGENT PIPELINE ──────────────────────────────────── */
+.agent-pipeline-section { background: var(--bg2); }
+
+.pipeline-desk {
+  margin-bottom: 28px;
+  background: var(--s0);
+  border: 1px solid var(--b0);
+  border-radius: var(--r12);
+  padding: 20px 24px 24px;
+}
+
+.pipeline-desk-hd {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.pipeline-desk-ico {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.pipeline-desk-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--tx);
+}
+
+.pipeline-desk-badge {
+  margin-left: auto;
+  font-family: var(--fm);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--b1);
+  color: var(--tx3);
+}
+
+.pdg-green { color: var(--g); border-color: rgba(74,222,128,.3); background: rgba(74,222,128,.06); }
+.pdg-amber { color: var(--a); border-color: rgba(251,191,36,.3);  background: rgba(251,191,36,.06); }
+.pdg-red   { color: var(--r); border-color: rgba(248,113,113,.3); background: rgba(248,113,113,.06); }
+
+/* Skeleton loader */
+.agent-flow-skeleton {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+}
+.ask {
+  flex-shrink: 0;
+  width: 140px;
+  height: 108px;
+  border-radius: var(--r8);
+  background: var(--s1);
+  animation: pulse-sk 1.4s ease-in-out infinite;
+}
+.ask-arr {
+  flex-shrink: 0;
+  width: 36px;
+  height: 2px;
+  background: var(--b1);
+}
+@keyframes pulse-sk { 50% { opacity: .4; } }
+
+/* Rendered flow */
+.agent-flow-inner {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+/* Agent card (football pipeline) */
+.agent-card {
+  flex-shrink: 0;
+  width: 148px;
+  background: var(--s1);
+  border: 1px solid var(--b1);
+  border-radius: var(--r8);
+  padding: 14px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color .2s, background .2s;
+}
+
+.agent-card:hover {
+  border-color: var(--b2);
+  background: var(--s2);
+}
+
+.agent-card.alive  { border-color: rgba(74,222,128,.2);  }
+.agent-card.stale  { border-color: rgba(251,191,36,.2);  }
+.agent-card.offline{ border-color: rgba(248,113,113,.2); }
+
+.ac-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ac-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.ac-num {
+  font-family: var(--fm);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--tx3);
+}
+
+.ac-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--tx);
+  line-height: 1.2;
+}
+
+.ac-role {
+  font-size: 10px;
+  color: var(--tx3);
+  line-height: 1.4;
+  flex: 1;
+}
+
+.ac-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.ac-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-green { background: var(--g); box-shadow: 0 0 6px rgba(74,222,128,.6); animation: blink-dot 2s ease-in-out infinite; }
+.dot-amber { background: var(--a); box-shadow: 0 0 6px rgba(251,191,36,.5); animation: blink-dot 2.4s ease-in-out infinite; }
+.dot-red   { background: var(--r); }
+
+.ac-label {
+  font-family: var(--fm);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--tx2);
+}
+
+.ac-age {
+  font-family: var(--fm);
+  font-size: 9px;
+  color: var(--tx3);
+  margin-left: auto;
+}
+
+/* Section chip color variants */
+.sc-green { color: var(--g) !important; border-color: rgba(74,222,128,.3) !important; background: rgba(74,222,128,.06) !important; }
+.sc-amber { color: var(--a) !important; border-color: rgba(251,191,36,.3)  !important; background: rgba(251,191,36,.06)  !important; }
+
+/* Arrow connector between football cards */
+.flow-arrow {
+  flex-shrink: 0;
+  width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: var(--tx3);
+}
+
+.flow-pulse {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--g);
+  opacity: 0;
+}
+
+.flow-pulse.fp-active {
+  animation: flow-travel 2s linear infinite;
+}
+
+@keyframes flow-travel {
+  0%   { left: 0;    opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { left: 28px; opacity: 0; }
+}
+
+/* Crypto agents grid */
+.crypto-agent-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.agent-card-sm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--s1);
+  border: 1px solid var(--b1);
+  border-radius: var(--r8);
+  transition: border-color .2s;
+}
+
+.agent-card-sm.alive   { border-color: rgba(74,222,128,.2);  }
+.agent-card-sm.offline { border-color: rgba(248,113,113,.15); }
+
+.ac-icon-sm { font-size: 16px; flex-shrink: 0; }
+
+.acs-body { flex: 1; min-width: 0; }
+
+.acs-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--tx);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.acs-role {
+  font-size: 10px;
+  color: var(--tx3);
+  line-height: 1.35;
+  margin-top: 2px;
+}
+
+.acs-dot { flex-shrink: 0; }
+
+@media (max-width: 1000px) {
+  .crypto-agent-grid { grid-template-columns: repeat(2, 1fr); }
+  .agent-flow-inner { padding-bottom: 8px; }
+}
+
+@media (max-width: 600px) {
+  .crypto-agent-grid { grid-template-columns: 1fr; }
+  .pipeline-desk { padding: 16px; }
 }

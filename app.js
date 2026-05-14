@@ -1,7 +1,25 @@
 /* Agentic Markets OS — app.js */
 
+// ── Agent pipeline metadata ────────────────────────────
+const FOOTBALL_PIPELINE = [
+  { key: "DataCollector",    label: "Data Collector",  role: "Live match data · odds · xG feeds",          icon: "📡" },
+  { key: "ModelAgent",       label: "Model",           role: "Dixon-Coles · Pi Rating · Poisson",          icon: "🧠" },
+  { key: "AnalystAgent",     label: "Analyst",         role: "Value edge detection · confidence",          icon: "📊" },
+  { key: "StrategistAgent",  label: "Strategist",      role: "Bet selection · signal generation",          icon: "⚡" },
+  { key: "RiskManagerAgent", label: "Risk Manager",    role: "Kelly sizing · exposure caps · drawdown",    icon: "🛡️" },
+  { key: "TraderAgent",      label: "Trader",          role: "Betfair execution · settlement · P&L",       icon: "💱" },
+];
+
+const TENNIS_PIPELINE = [
+  { key: "TennisDataCollectorAgent", label: "Data Collector", role: "Betfair tennis markets · 60+ events",  icon: "📡" },
+  { key: "TennisModelAgent",         label: "Model",          role: "Elo Surface v2 · clay/grass/hard",     icon: "🧠" },
+  { key: "TennisAnalystAgent",       label: "Analyst",        role: "Value edge · 4% threshold",            icon: "📊" },
+  { key: "TennisRiskManagerAgent",   label: "Risk Manager",   role: "Kelly f=0.25 · 3% cap · drawdown",    icon: "🛡️" },
+  { key: "TennisTraderAgent",        label: "Trader",         role: "Paper bets · Neon DB · Telegram",      icon: "💱" },
+];
+
 const SPORTS_URL = "https://agentic-markets-roan.vercel.app";
-const CRYPTO_URL = "https://meme-coin-control-center.vercel.app";
+const TENNIS_URL = "https://agentic-markets-roan.vercel.app";
 const OS_URL     = "https://agentic-markets-os.vercel.app";
 const API_BASE   = window.location.protocol === "file:" ? OS_URL : "";
 
@@ -76,6 +94,88 @@ function setBadge(id, state) {
   );
 }
 
+// ── Render: Agent pipeline ────────────────────────
+function statusMeta(status) {
+  if (status === "alive")   return { cls: "alive",   label: "LIVE",    dot: "dot-green" };
+  if (status === "stale")   return { cls: "stale",   label: "STALE",   dot: "dot-amber" };
+  if (status === "running") return { cls: "alive",   label: "LIVE",    dot: "dot-green" };
+  return                           { cls: "offline", label: "OFFLINE", dot: "dot-red"   };
+}
+
+function renderFootballPipeline(agentList) {
+  const flow    = $("footballAgentFlow");
+  const badge   = $("footballPipelineBadge");
+  const chip    = $("agentPipelineChip");
+  if (!flow) return;
+
+  // Build lookup by name
+  const byName = {};
+  for (const a of (agentList || [])) byName[a.name] = a;
+
+  const alive = (agentList || []).filter(a => a.status === "alive" || a.status === "running").length;
+  const total = FOOTBALL_PIPELINE.length;
+
+  if (badge) {
+    badge.textContent = `${alive}/${total} alive`;
+    badge.className = "pipeline-desk-badge " + (alive === total ? "pdg-green" : alive > 0 ? "pdg-amber" : "pdg-red");
+  }
+  if (chip) {
+    chip.textContent = `${alive}/${total} football · 5 tennis`;
+    chip.className   = "section-chip " + (alive === total ? "sc-green" : "sc-amber");
+  }
+
+  const cards = FOOTBALL_PIPELINE.map((ag, i) => {
+    const live = byName[ag.key] ?? null;
+    const st   = statusMeta(live?.status ?? "offline");
+    const age  = live?.age_seconds;
+    const timeLabel = !live ? "" : age == null ? "live" : age < 60 ? "just now" : age < 3600 ? `${Math.floor(age/60)}m ago` : `${Math.floor(age/3600)}h ago`;
+
+    const arr = i < FOOTBALL_PIPELINE.length - 1
+      ? `<div class="flow-arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="flow-pulse ${st.cls === 'alive' ? 'fp-active' : ''}"></div></div>`
+      : "";
+
+    return `
+      <div class="agent-card ${st.cls}">
+        <div class="ac-top">
+          <span class="ac-icon">${ag.icon}</span>
+          <span class="ac-num">${String(i+1).padStart(2,'0')}</span>
+        </div>
+        <div class="ac-name">${ag.label}</div>
+        <div class="ac-role">${ag.role}</div>
+        <div class="ac-status">
+          <span class="ac-dot ${st.dot}"></span>
+          <span class="ac-label">${st.label}</span>
+          ${timeLabel ? `<span class="ac-age">${timeLabel}</span>` : ""}
+        </div>
+      </div>${arr}`;
+  }).join("");
+
+  flow.innerHTML = `<div class="agent-flow-inner">${cards}</div>`;
+}
+
+function renderTennisPipeline(tennisOk) {
+  const grid  = $("tennisAgentGrid");
+  const badge = $("tennisPipelineBadge");
+  if (!grid) return;
+
+  const st = tennisOk ? statusMeta("alive") : statusMeta("offline");
+
+  if (badge) {
+    badge.textContent = tennisOk ? "5/5 alive" : "Offline";
+    badge.className   = "pipeline-desk-badge " + (tennisOk ? "pdg-amber" : "pdg-red");
+  }
+
+  grid.innerHTML = TENNIS_PIPELINE.map(ag => `
+    <div class="agent-card-sm ${st.cls}">
+      <span class="ac-icon-sm">${ag.icon}</span>
+      <div class="acs-body">
+        <div class="acs-name">${ag.label}</div>
+        <div class="acs-role">${ag.role}</div>
+      </div>
+      <span class="ac-dot ${st.dot} acs-dot"></span>
+    </div>`).join("");
+}
+
 // ── Render: Football desk ──────────────────────────────────────
 function renderSportsDesk(sports) {
   if (!sports?.ok) {
@@ -109,52 +209,51 @@ function renderSportsDesk(sports) {
   if (Array.isArray(sports.agentList)) renderAgentDots(sports.agentList);
 }
 
-// ── Render: Crypto desk ────────────────────────────────────────
-function renderCryptoDesk(crypto) {
-  if (!crypto?.ok) {
-    setFlash("cryptoStatus", "OFFLINE");
-    $("cryptoStatus") && ($("cryptoStatus").className = "hstat-val negative");
-    setBadge("cryptoBadge", "offline");
+// ── Render: Tennis desk ────────────────────────────────────────
+function renderTennisDesk(tennis) {
+  if (!tennis?.ok) {
+    setFlash("tennisStatus", "OFFLINE");
+    $("tennisStatus") && ($("tennisStatus").className = "hstat-val negative");
+    setBadge("tennisBadge", "offline");
     return;
   }
 
-  const btc    = crypto.btc                 || {};
-  const config = crypto.optimizer?.config   || {};
-  const diag   = crypto.optimizer?.diagnostics || {};
-  const obs    = crypto.sheets?.observations ?? 0;
+  const s = tennis.summary || {};
 
-  setFlash("cryptoStatus",    "ONLINE");
-  $("cryptoStatus") && ($("cryptoStatus").className = "hstat-val positive");
-  setBadge("cryptoBadge", "online");
+  setFlash("tennisStatus", "ONLINE");
+  $("tennisStatus") && ($("tennisStatus").className = "hstat-val positive");
+  setBadge("tennisBadge", "online");
 
-  setFlash("btcCycles",       String(btc.cycles ?? "—"));
-  setFlash("optimizerMode",   config.mode || "—");
-  setFlash("cryptoObservations", String(obs));
-  setFlash("kpiObs",          String(obs));
-  setFlash("kpiRiskMode",     config.mode || "—");
-  setFlash("btcPosition",     btc.position ? btc.position.side : "FLAT");
-  setFlash("cryptoReadiness", `${diag.readiness ?? "—"}/100`);
-  setFlash("cleanMissed",     String(diag.cleanMissed ?? "—"));
-  setFlash("badEntries",      String(diag.badEntries  ?? "—"));
+  setFlash("tennisHealth",         `${tennis.agents?.alive ?? 0}/${tennis.agents?.total ?? 0} alive`);
+  setFlash("tennisValueBets",      String(s.value_bets ?? 0));
+  setFlash("kpiTennisValueBets",   String(s.value_bets ?? 0));
+  setFlash("tennisMarketsLive",    String(s.markets_active ?? 0));
+  setFlash("kpiTennisMarkets",     String(s.markets_active ?? 0));
+  setFlash("tennisMode",           "Paper");
 
-  const rat = config.rationale || "Optimizer online.";
-  const ratEl = $("optimizerRationale");
-  if (ratEl && ratEl.textContent !== rat) ratEl.textContent = rat;
+  const statusMsg = `Elo Surface v2 · ${s.markets_active ?? 0} markets · ${s.value_bets ?? 0} value bets`;
+  const ratEl = $("tennisRationale");
+  if (ratEl && ratEl.textContent !== statusMsg) ratEl.textContent = statusMsg;
+}
+
+// ── Render: Agent pipeline (orchestrator) ─────────────
+function renderAgentPipeline(status) {
+  renderFootballPipeline(status.sports?.agentList ?? []);
+  renderTennisPipeline(Boolean(status.tennis?.ok));
 }
 
 // ── Render: OS status ──────────────────────────────────────────
 function renderOsStatus(status) {
   const sportsOk    = Boolean(status.sports?.ok);
-  const cryptoOk    = Boolean(status.crypto?.ok);
+  const tennisOk    = Boolean(status.tennis?.ok);
   const alive       = Number(status.sports?.agents?.alive ?? 0);
   const total       = Number(status.sports?.agents?.total ?? 0);
-  const storage     = status.crypto?.storage?.provider || "unknown";
   const score       = status.os?.systemScore ?? 0;
 
   const label = status.os?.label
     ? status.os.label.toUpperCase()
-    : sportsOk && cryptoOk && alive === total ? "ONLINE"
-    : sportsOk && cryptoOk ? "DEGRADED" : "CHECK";
+    : sportsOk && tennisOk && alive === total ? "ONLINE"
+    : sportsOk && tennisOk ? "DEGRADED" : "CHECK";
 
   const osEl = $("osStatus");
   if (osEl) {
@@ -165,12 +264,12 @@ function renderOsStatus(status) {
   }
 
   set("osStatusDetail",
-    `Football ${alive}/${total} agents · Crypto ${cryptoOk ? "online" : "offline"} · Storage ${storage}`
+    `Football ${alive}/${total} agents · Tennis ${tennisOk ? "online" : "offline"} · Score ${score}/100`
   );
 
   const dBadge = $("disciplineBadge");
   if (dBadge) {
-    const unified = sportsOk && cryptoOk;
+    const unified = sportsOk && tennisOk;
     dBadge.textContent = unified ? "Unified" : "Split";
     dBadge.className = "chip " + (unified ? "chip-green" : "chip-amber");
   }
@@ -241,14 +340,15 @@ async function refreshAll() {
   if (btn) btn.classList.add("spinning");
 
   set("sportsStatus", "SYNC");
-  set("cryptoStatus", "SYNC");
+  set("tennisStatus", "SYNC");
 
   try {
     const status = await fetchJson(`${API_BASE}/api/os-status`);
     lastRefresh = Date.now();
     renderOsStatus(status);
     renderSportsDesk(status.sports);
-    renderCryptoDesk(status.crypto);
+    renderTennisDesk(status.tennis);
+    renderAgentPipeline(status);
     renderAlerts(status);
     renderMarkets(status);
   } catch (err) {
@@ -257,7 +357,7 @@ async function refreshAll() {
     if (osEl) { osEl.textContent = "CHECK"; osEl.className = "os-card-val negative"; }
     set("osStatusDetail", "OS aggregator unreachable — check API status.");
     set("sportsStatus", "—");
-    set("cryptoStatus", "—");
+    set("tennisStatus", "—");
     const b = $("alertsBadge");
     if (b) { b.textContent = "API Error"; b.className = "chip chip-red"; }
   } finally {

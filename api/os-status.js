@@ -1,5 +1,4 @@
 const SPORTS_URL = "https://agentic-markets-roan.vercel.app";
-const CRYPTO_URL  = "https://meme-coin-control-center.vercel.app";
 const TIMEOUT_MS  = 8_000;
 
 async function safeFetch(url) {
@@ -15,7 +14,7 @@ async function safeFetch(url) {
   }
 }
 
-function scoreAndAlerts(health, preds, opt) {
+function scoreAndAlerts(health, preds, tennisData) {
   const alerts = [];
   let score = 0;
 
@@ -25,7 +24,7 @@ function scoreAndAlerts(health, preds, opt) {
   } else {
     const agents  = health.agents ?? [];
     const alive   = agents.filter(a => a.status === "alive").length;
-    const total   = agents.length || 9;
+    const total   = agents.length || 10;
 
     // Agents alive: 25 pts
     score += Math.round((alive / total) * 25);
@@ -51,27 +50,24 @@ function scoreAndAlerts(health, preds, opt) {
     if (health.status === "ok") score += 5;
   }
 
-  /* ── Crypto block (50 pts) ────────────────────── */
-  if (!opt || !opt.ok) {
-    alerts.push({ desk: "Crypto", message: "Optimizer unreachable", level: "critical" });
+  /* ── Tennis block (50 pts) ────────────────────── */
+  if (!tennisData?.matches) {
+    alerts.push({ desk: "Tennis", message: "Tennis API unreachable", level: "critical" });
   } else {
-    const readiness = opt.diagnostics?.readiness ?? 0;
-    const samples   = opt.diagnostics?.total      ?? 0;
+    const tennisMatches   = tennisData.matches?.length ?? 0;
+    const tennisValueBets = tennisData.summary?.value_bets ?? 0;
 
-    // Readiness: 25 pts
-    score += Math.round((readiness / 100) * 25);
+    // Matches available: 25 pts
+    score += Math.min(25, Math.round((tennisMatches / 10) * 25));
 
-    // Dataset depth: 15 pts (target 1000 samples)
-    score += Math.min(15, Math.round((samples / 1000) * 15));
+    // API reachable: 15 pts
+    score += 15;
 
-    // Storage reachable: 10 pts
-    score += 10;
+    // Value bets computed: 10 pts
+    if (tennisValueBets > 0) score += 10;
 
-    if (readiness < 40)
-      alerts.push({ desk: "Crypto", message: `Optimizer readiness low (${readiness}/100)`, level: "warning" });
-
-    if (samples < 200)
-      alerts.push({ desk: "Crypto", message: `Only ${samples} research samples collected`, level: "warning" });
+    if (tennisMatches === 0)
+      alerts.push({ desk: "Tennis", message: "No tennis markets available", level: "warning" });
   }
 
   return { score: Math.max(0, Math.min(100, score)), alerts };
@@ -87,16 +83,16 @@ module.exports = async function handler(req, res) {
   }
 
   /* ── Parallel fetch from both desks ──────────── */
-  const [health, preds, history, betData, opt] = await Promise.all([
+  const [health, preds, history, betData, tennisData] = await Promise.all([
     safeFetch(`${SPORTS_URL}/api/health`),
     safeFetch(`${SPORTS_URL}/api/predictions`),
     safeFetch(`${SPORTS_URL}/api/history`),
     safeFetch(`${SPORTS_URL}/api/data`),
-    safeFetch(`${CRYPTO_URL}/api/optimizer`),
+    safeFetch(`${SPORTS_URL}/api/tennis`),
   ]);
 
   const sportsOk = Boolean(health?.status && health.status !== "error");
-  const cryptoOk = Boolean(opt?.ok);
+  const tennisOk = Boolean(tennisData?.matches);
 
   /* ── Sports agents ───────────────────────────── */
   const agentList = (health?.agents ?? []).map(a => ({
@@ -105,11 +101,10 @@ module.exports = async function handler(req, res) {
     age_seconds: a.age_seconds ?? null,
   }));
   const alive   = agentList.filter(a => a.status === "alive").length;
-  const total   = agentList.length || 9;
+  const total   = agentList.length || 10;
   const offline = agentList.filter(a => a.status === "offline").length;
 
   /* ── Sports summary ──────────────────────────── */
-  // Prefer /api/data for active bets; /api/history for settled P&L
   const betsPlaced  = betData?.summary?.total_bets ?? history?.stats?.bets_placed ?? 0;
   const totalReturn = Number(history?.stats?.total_return ?? 0);
   const betsPending = betData?.summary?.pending ?? 0;
@@ -117,24 +112,22 @@ module.exports = async function handler(req, res) {
   const sportsHealth = health?.status === "ok" ? "ok"
     : offline > 0 ? "degraded" : "warning";
 
-  /* ── Crypto ──────────────────────────────────── */
-  const optConfig = opt?.config          ?? {};
-  const optDiag   = opt?.diagnostics     ?? {};
-  const storage   = opt?.storage         ?? { provider: "unknown" };
-  const obsCount  = optDiag.total        ?? 0;
+  /* ── Tennis ──────────────────────────────────── */
+  const tennisMatches   = tennisData?.matches?.length ?? 0;
+  const tennisSummary   = tennisData?.summary  ?? {};
+  const tennisApiStatus = tennisData?.status   ?? "offline";
 
   /* ── System score + alerts ───────────────────── */
-  const { score: systemScore, alerts } = scoreAndAlerts(health, preds, opt);
+  const { score: systemScore, alerts } = scoreAndAlerts(health, preds, tennisData);
 
   const label =
-    sportsOk && cryptoOk && offline === 0 ? "ONLINE" :
-    sportsOk && cryptoOk                  ? "DEGRADED" :
-    sportsOk || cryptoOk                  ? "PARTIAL"  : "OFFLINE";
+    sportsOk && tennisOk && offline === 0 ? "ONLINE" :
+    sportsOk && tennisOk                  ? "DEGRADED" :
+    sportsOk || tennisOk                  ? "PARTIAL"  : "OFFLINE";
 
   /* ── Market roadmap (ids match HTML market-{id}) ── */
   const markets = [
     { id: "polymarket", status: "planned", score: 0, priority: "high" },
-    { id: "tennis",     status: "planned", score: 0, priority: "medium" },
     { id: "nba",        status: "planned", score: 0, priority: "medium" },
     { id: "macro",      status: "planned", score: 0, priority: "low" },
   ];
@@ -157,22 +150,12 @@ module.exports = async function handler(req, res) {
       agentList,
     },
 
-    crypto: {
-      ok: cryptoOk,
-      btc: { cycles: null, position: null },
-      optimizer: {
-        config: {
-          mode:      optConfig.mode      ?? "—",
-          rationale: optConfig.rationale ?? "",
-        },
-        diagnostics: {
-          readiness:   optDiag.readiness  ?? 0,
-          cleanMissed: optDiag.cleanMissed ?? 0,
-          badEntries:  optDiag.badEntries  ?? 0,
-        },
-      },
-      sheets: { observations: obsCount },
-      storage,
+    tennis: {
+      ok: tennisOk,
+      status: tennisApiStatus,
+      matches: tennisMatches,
+      summary: tennisSummary,
+      agents: { alive: tennisOk ? 5 : 0, total: 5 },
     },
 
     os: {

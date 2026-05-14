@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Agentic Markets OS</title>
-  <meta name="description" content="9 AI agents. Football and crypto prediction markets. One unified OS.">
+  <meta name="description" content="15 AI agents. Football and Tennis prediction markets. One unified OS.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -45,9 +45,9 @@
       </div>
       <div class="hstat-div"></div>
       <div class="hstat">
-        <span class="hstat-icon">₿</span>
-        <span class="hstat-label">Crypto</span>
-        <strong class="hstat-val" id="cryptoStatus">—</strong>
+        <span class="hstat-icon">🎾</span>
+        <span class="hstat-label">Tennis</span>
+        <strong class="hstat-val" id="tennisStatus">—</strong>
       </div>
       <div class="hstat-div"></div>
       <div class="hstat">
@@ -82,12 +82,12 @@
       <div class="hero-left">
         <div class="hero-tag">
           <span class="tag-dot"></span>
-          Multi-Agent AI · Football · Crypto · Prediction Markets
+          Multi-Agent AI · Football · Tennis · Prediction Markets
         </div>
         <h1 class="hero-h1">The AI pipeline<br>for prediction<br>markets.</h1>
         <p class="hero-p">
-          9 specialized agents predict, size and execute across football and crypto —
-          Dixon-Coles models, Kelly sizing, Betfair execution, continuous learning.
+          15 specialized agents predict, size and execute across football and tennis —
+          Dixon-Coles, Elo surface models, Kelly sizing, Betfair execution, continuous learning.
           Same pipeline. Different edge. Every market.
         </p>
         <div class="hero-ctas">
@@ -95,8 +95,8 @@
             Football Desk
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.5h8M7.5 3.5l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <a class="cta-secondary" href="https://meme-coin-control-center.vercel.app" target="_blank" rel="noreferrer">
-            Crypto Desk
+          <a class="cta-secondary" href="https://agentic-markets-roan.vercel.app" target="_blank" rel="noreferrer">
+            Tennis Desk
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.5h8M7.5 3.5l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
         </div>
@@ -140,7 +140,7 @@
         <div class="kpi">
           <span class="kpi-l">Active Desks</span>
           <strong class="kpi-v">2</strong>
-          <span class="kpi-s">Football · Crypto</span>
+          <span class="kpi-s">Football · Tennis</span>
         </div>
         <div class="kpi">
           <span class="kpi-l">Football Agents</span>
@@ -158,14 +158,14 @@
           <span class="kpi-s">running</span>
         </div>
         <div class="kpi">
-          <span class="kpi-l">Crypto Risk Mode</span>
-          <strong class="kpi-v" id="kpiRiskMode">—</strong>
-          <span class="kpi-s">optimizer</span>
+          <span class="kpi-l">Tennis Value Bets</span>
+          <strong class="kpi-v" id="kpiTennisValueBets">—</strong>
+          <span class="kpi-s">edge &gt; 4%</span>
         </div>
         <div class="kpi">
-          <span class="kpi-l">Observations</span>
-          <strong class="kpi-v" id="kpiObs">—</strong>
-          <span class="kpi-s">crypto dataset</span>
+          <span class="kpi-l">Tennis Markets</span>
+          <strong class="kpi-v" id="kpiTennisMarkets">—</strong>
+          <span class="kpi-s">Betfair live</span>
         </div>
         <div class="kpi">
           <span class="kpi-l">Predictions</span>
@@ -174,6 +174,50 @@
         </div>
       </div>
     </div>
+
+    <!-- ═══ LIVE AGENT PIPELINE ═════════════════════════════════════════════ -->
+    <section class="page-section agent-pipeline-section">
+      <div class="section-hd">
+        <h2 class="section-title">Live Agent Pipeline</h2>
+        <span class="section-chip" id="agentPipelineChip">Loading…</span>
+      </div>
+      <p class="section-sub">
+        Each market runs 6 specialized AI agents in sequence — from raw data ingestion to exchange execution.
+        Status updates every 60s from live heartbeats.
+      </p>
+
+      <!-- Football Pipeline -->
+      <div class="pipeline-desk">
+        <div class="pipeline-desk-hd">
+          <span class="pipeline-desk-ico">⚽</span>
+          <span class="pipeline-desk-label">Football Desk</span>
+          <span class="pipeline-desk-badge" id="footballPipelineBadge">—</span>
+        </div>
+        <div class="agent-flow" id="footballAgentFlow">
+          <!-- Rendered by JS -->
+          <div class="agent-flow-skeleton">
+            <div class="ask"></div><div class="ask-arr"></div>
+            <div class="ask"></div><div class="ask-arr"></div>
+            <div class="ask"></div><div class="ask-arr"></div>
+            <div class="ask"></div><div class="ask-arr"></div>
+            <div class="ask"></div><div class="ask-arr"></div>
+            <div class="ask"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tennis Pipeline -->
+      <div class="pipeline-desk pipeline-desk-tennis">
+        <div class="pipeline-desk-hd">
+          <span class="pipeline-desk-ico">🎾</span>
+          <span class="pipeline-desk-label">Tennis Desk</span>
+          <span class="pipeline-desk-badge pipeline-desk-badge-amber" id="tennisPipelineBadge">—</span>
+        </div>
+        <div class="tennis-agent-grid" id="tennisAgentGrid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
 
     <!-- ═══ LIVE DESKS ════════════════════════════════════════════════════════ -->
     <section class="page-section">
@@ -232,64 +276,49 @@
           </div>
         </article>
 
-        <!-- CRYPTO -->
-        <article class="desk desk-green">
+        <!-- TENNIS -->
+        <article class="desk desk-amber">
           <div class="desk-top">
             <div class="desk-id">
-              <div class="desk-num desk-num-g">02</div>
+              <div class="desk-num">02</div>
               <div>
-                <div class="desk-cat">Algorithmic Trading</div>
-                <h3 class="desk-name">Meme Coin &amp; BTC</h3>
+                <div class="desk-cat">Prediction Markets</div>
+                <h3 class="desk-name">Tennis Betting</h3>
               </div>
             </div>
-            <span class="desk-badge" id="cryptoBadge">CHECKING</span>
+            <span class="desk-badge" id="tennisBadge">CHECKING</span>
           </div>
 
           <p class="desk-desc">
-            DexScreener Solana launch scanner, BTCUSDT order-flow paper agent,
-            Upstash dataset, missed-winner analysis and persistent optimizer
-            with adaptive risk modes.
+            Betfair Exchange execution driven by Elo Surface model (clay/grass/hard),
+            fatigue adjustment, fractional Kelly sizing. 1499 players bootstrapped from
+            Jeff Sackmann ATP/WTA data. Paper trading active.
           </p>
 
           <div class="desk-metrics">
             <div class="dmetric">
-              <span>BTC Cycles</span>
-              <strong id="btcCycles">—</strong>
+              <span>Agent Health</span>
+              <strong id="tennisHealth">—</strong>
             </div>
             <div class="dmetric">
-              <span>Optimizer</span>
-              <strong id="optimizerMode">—</strong>
+              <span>Value Bets</span>
+              <strong id="tennisValueBets">—</strong>
             </div>
             <div class="dmetric">
-              <span>Observations</span>
-              <strong id="cryptoObservations">—</strong>
+              <span>Markets Live</span>
+              <strong id="tennisMarketsLive">—</strong>
             </div>
             <div class="dmetric">
-              <span>BTC Position</span>
-              <strong id="btcPosition">—</strong>
+              <span>Mode</span>
+              <strong id="tennisMode">Paper</strong>
             </div>
           </div>
 
-          <div class="research-row">
-            <div class="rmetric">
-              <span>Crypto Readiness</span>
-              <strong id="cryptoReadiness">—</strong>
-            </div>
-            <div class="rmetric">
-              <span>Clean Missed</span>
-              <strong id="cleanMissed">—</strong>
-            </div>
-            <div class="rmetric">
-              <span>Bad Entries</span>
-              <strong id="badEntries">—</strong>
-            </div>
-          </div>
-
-          <div class="rationale-box" id="optimizerRationale">Waiting for optimizer…</div>
+          <div class="rationale-box" id="tennisRationale">Loading tennis model status…</div>
 
           <div class="desk-foot">
-            <a class="desk-btn desk-btn-green" href="https://meme-coin-control-center.vercel.app" target="_blank" rel="noreferrer">Open Crypto Desk →</a>
-            <a class="desk-btn desk-btn-dim" href="https://meme-coin-control-center.vercel.app/api/optimizer" target="_blank" rel="noreferrer">Optimizer API</a>
+            <a class="desk-btn desk-btn-amber" href="https://agentic-markets-roan.vercel.app" target="_blank" rel="noreferrer">Open Tennis Desk →</a>
+            <a class="desk-btn desk-btn-dim" href="https://agentic-markets-roan.vercel.app/api/tennis" target="_blank" rel="noreferrer">Tennis API</a>
           </div>
         </article>
 
@@ -312,7 +341,7 @@
           <div class="pipe-icon">📡</div>
           <div class="pipe-name">Data Source</div>
           <div class="pipe-desc">Real-time feeds, exchange APIs, web crawlers, historical datasets.</div>
-          <div class="pipe-tags">Betfair · Football-Data · DexScreener · RapidAPI</div>
+          <div class="pipe-tags">Betfair · Football-Data · Jeff Sackmann ATP/WTA · RapidAPI</div>
         </div>
 
         <div class="pipe-conn" aria-hidden="true">
@@ -411,7 +440,7 @@
               <div class="risk-heading">Desk-Specific</div>
               <ul class="risk-ul">
                 <li>Football: fractional Kelly, exposure cap, completeness gate, drawdown lock</li>
-                <li>Crypto: 5–10% size, adaptive EV gate, stop-loss reverse engineering</li>
+                <li>Tennis: quarter-Kelly sizing, 4% edge threshold, 12% monthly drawdown limit</li>
                 <li>New desks: require data source, model, risk gate and settlement before go-live</li>
               </ul>
             </div>
@@ -439,10 +468,10 @@
           <div class="rmap-tag">High Priority</div>
         </div>
         <div class="rmap-card">
-          <div class="rmap-icon">🎾</div>
-          <div class="rmap-name">Tennis</div>
-          <div class="rmap-desc" id="market-tennis">Serve/return models, live momentum, injury & news flow</div>
-          <div class="rmap-tag">Sports</div>
+          <div class="rmap-icon">🪙</div>
+          <div class="rmap-name">Meme Coin</div>
+          <div class="rmap-desc">DexScreener Solana scanner, on-chain intelligence, momentum scoring</div>
+          <div class="rmap-tag">Crypto</div>
         </div>
         <div class="rmap-card">
           <div class="rmap-icon">🏀</div>
@@ -475,7 +504,7 @@
 
   <footer class="footer">
     <div class="foot-brand">Agentic Markets OS</div>
-    <div class="foot-meta">Multi-Agent AI System · Football · Crypto · v5.0</div>
+    <div class="foot-meta">Multi-Agent AI System · Football · Tennis · v2.0</div>
     <div class="foot-meta">© Agentic Markets — Andrea &amp; Michele</div>
   </footer>
 
