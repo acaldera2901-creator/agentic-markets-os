@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Agentic Markets OS</title>
-  <meta name="description" content="15 AI agents. Football and Tennis prediction markets. One unified OS.">
+  <title>Agentic Markets</title>
+  <meta name="description" content="AI-powered prediction markets. Football and Tennis. Real-time edge detection on Betfair Exchange.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -12,54 +12,35 @@
 </head>
 <body>
 
-  <!-- ═══ HEADER ═══════════════════════════════════════════════════════════ -->
-  <header class="header">
-    <div class="header-brand">
-      <div class="brand-hex">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+  <!-- ═══ NAV ═══════════════════════════════════════════════════════════════ -->
+  <nav class="nav">
+    <div class="nav-brand">
+      <div class="nav-hex">
+        <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
           <polygon points="16,2 30,9 30,23 16,30 2,23 2,9" stroke="currentColor" stroke-width="1.5" fill="none"/>
           <circle cx="16" cy="16" r="4" fill="currentColor"/>
           <line x1="16" y1="6" x2="16" y2="12" stroke="currentColor" stroke-width="1.5"/>
           <line x1="16" y1="20" x2="16" y2="26" stroke="currentColor" stroke-width="1.5"/>
           <line x1="7.5" y1="11" x2="12" y2="13.5" stroke="currentColor" stroke-width="1.5"/>
           <line x1="20" y1="18.5" x2="24.5" y2="21" stroke="currentColor" stroke-width="1.5"/>
-          <line x1="24.5" y1="11" x2="20" y2="13.5" stroke="currentColor" stroke-width="1.5"/>
-          <line x1="12" y1="18.5" x2="7.5" y2="21" stroke="currentColor" stroke-width="1.5"/>
         </svg>
       </div>
-      <div>
-        <div class="brand-eyebrow">Prediction Markets</div>
-        <div class="brand-name">Agentic Markets OS</div>
-      </div>
-      <div class="live-pill">
-        <span class="live-dot"></span>
-        LIVE
+      <span class="nav-name">Agentic Markets</span>
+      <span class="nav-live"><span class="live-dot"></span>LIVE</span>
+    </div>
+
+    <div class="nav-chips">
+      <div class="nav-chip nav-chip-pnl" id="navPnl">P&L —</div>
+      <div class="nav-chip nav-chip-bets" id="navBets">— bets open</div>
+      <div class="nav-status-pill">
+        <span class="nav-status-dot" id="navStatusDot"></span>
+        <span class="nav-status-label" id="navStatusLabel">Loading</span>
       </div>
     </div>
 
-    <div class="header-status">
-      <div class="hstat">
-        <span class="hstat-icon">⚽</span>
-        <span class="hstat-label">Football</span>
-        <strong class="hstat-val" id="sportsStatus">—</strong>
-      </div>
-      <div class="hstat-div"></div>
-      <div class="hstat">
-        <span class="hstat-icon">🎾</span>
-        <span class="hstat-label">Tennis</span>
-        <strong class="hstat-val" id="tennisStatus">—</strong>
-      </div>
-      <div class="hstat-div"></div>
-      <div class="hstat">
-        <span class="hstat-icon">⚡</span>
-        <span class="hstat-label">OS Score</span>
-        <strong class="hstat-val" id="systemScoreHeader">—</strong>
-      </div>
-    </div>
-
-    <div class="header-end">
-      <span class="h-time" id="lastUpdateTime">Syncing…</span>
-      <button class="h-refresh" id="refreshBtn" type="button">
+    <div class="nav-end">
+      <span class="nav-time" id="lastUpdateTime">Syncing…</span>
+      <button class="nav-refresh" id="refreshBtn" type="button">
         <svg class="refresh-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
           <path d="M12.5 7A5.5 5.5 0 1 1 7 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           <path d="M7 1.5 L10 4 L7 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -67,444 +48,218 @@
         Refresh
       </button>
     </div>
-  </header>
+  </nav>
 
-  <main>
-
-    <!-- ═══ HERO ════════════════════════════════════════════════════════════ -->
-    <section class="hero">
-      <div class="hero-orbs" aria-hidden="true">
-        <div class="orb orb-c"></div>
-        <div class="orb orb-g"></div>
-        <div class="orb orb-v"></div>
+  <!-- ═══ HERO BAND ═════════════════════════════════════════════════════════ -->
+  <section class="hero-band">
+    <div class="hero-orbs" aria-hidden="true">
+      <div class="orb orb-g"></div>
+      <div class="orb orb-c"></div>
+    </div>
+    <div class="hero-band-inner">
+      <div class="hero-pnl-block">
+        <div class="hero-pnl-label">Total P&L</div>
+        <div class="hero-pnl-value neutral" id="heroPnl">—</div>
+        <div class="hero-pnl-sub">All settled bets · Betfair Exchange</div>
       </div>
-
-      <div class="hero-left">
-        <div class="hero-tag">
-          <span class="tag-dot"></span>
-          Multi-Agent AI · Football · Tennis · Prediction Markets
+      <div class="hero-stats-grid">
+        <div class="hero-stat">
+          <div class="hero-stat-value" id="heroWinRate">—</div>
+          <div class="hero-stat-label">Win Rate</div>
         </div>
-        <h1 class="hero-h1">The AI pipeline<br>for prediction<br>markets.</h1>
-        <p class="hero-p">
-          16 specialized agents predict, size and execute across football and tennis.
-          Dixon-Coles · Elo Surface v2 · conformal intervals · fractional Kelly sizing · Betfair Exchange.
-          Same pipeline, different edge, every market — fully automated.
-        </p>
-        <div class="hero-ctas">
-          <a class="cta-primary" href="https://agentic-markets-roan.vercel.app" target="_blank" rel="noreferrer">
-            Football Desk
-            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.5h8M7.5 3.5l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <a class="cta-secondary" href="https://agentic-markets-roan.vercel.app" target="_blank" rel="noreferrer">
-            Tennis Desk
-            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.5h8M7.5 3.5l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
+        <div class="hero-stat">
+          <div class="hero-stat-value" id="heroActiveBets">—</div>
+          <div class="hero-stat-label">Open Bets</div>
         </div>
-      </div>
-
-      <div class="hero-right">
-        <div class="os-card">
-          <div class="os-card-label">OS STATUS</div>
-          <div class="os-card-val" id="osStatus">SYNC</div>
-          <div class="os-card-desc" id="osStatusDetail">Aggregating live desks…</div>
-          <div class="os-score">
-            <div class="os-score-row">
-              <span>System Score</span>
-              <strong id="systemScore">—/100</strong>
-            </div>
-            <div class="os-score-track">
-              <div class="os-score-fill" id="systemScoreBar"></div>
-            </div>
-          </div>
-          <div class="os-meta">
-            <div class="os-meta-cell">
-              <span>Active Desks</span>
-              <strong>2</strong>
-            </div>
-            <div class="os-meta-cell">
-              <span>Agents</span>
-              <strong id="sportsAgents">—</strong>
-            </div>
-            <div class="os-meta-cell">
-              <span>Roadmap</span>
-              <strong>+6</strong>
-            </div>
-          </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value" id="heroSignals">—</div>
+          <div class="hero-stat-label">Tennis Signals</div>
         </div>
-      </div>
-    </section>
-
-    <!-- ═══ KPI STRIP ════════════════════════════════════════════════════════ -->
-    <div class="kpi-band">
-      <div class="kpi-band-inner">
-        <div class="kpi">
-          <span class="kpi-l">Active Desks</span>
-          <strong class="kpi-v">2</strong>
-          <span class="kpi-s">Football · Tennis</span>
-        </div>
-        <div class="kpi">
-          <span class="kpi-l">Football Agents</span>
-          <strong class="kpi-v" id="kpiAgents">—</strong>
-          <span class="kpi-s" id="kpiAgentsSub">heartbeat health</span>
-        </div>
-        <div class="kpi">
-          <span class="kpi-l">Football Bets</span>
-          <strong class="kpi-v" id="kpiBets">—</strong>
-          <span class="kpi-s" id="kpiBetsSub">total tracked</span>
-        </div>
-        <div class="kpi">
-          <span class="kpi-l">Football P&amp;L</span>
-          <strong class="kpi-v positive" id="kpiPnl">—</strong>
-          <span class="kpi-s">net P&amp;L all bets</span>
-        </div>
-        <div class="kpi">
-          <span class="kpi-l">Tennis Value Bets</span>
-          <strong class="kpi-v" id="kpiTennisValueBets">—</strong>
-          <span class="kpi-s">edge &gt; 4%</span>
-        </div>
-        <div class="kpi">
-          <span class="kpi-l">Tennis Markets</span>
-          <strong class="kpi-v" id="kpiTennisMarkets">—</strong>
-          <span class="kpi-s">Betfair live</span>
-        </div>
-        <div class="kpi">
-          <span class="kpi-l">Predictions</span>
-          <strong class="kpi-v" id="kpiPredictions">—</strong>
-          <span class="kpi-s">active football</span>
+        <div class="hero-stat">
+          <div class="hero-stat-value" id="heroScore">—</div>
+          <div class="hero-stat-label">System Score</div>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- ═══ LIVE POSITIONS ══════════════════════════════════════════════════════ -->
-    <section class="page-section bets-section">
+  <main>
+
+    <!-- ═══ OPEN POSITIONS ════════════════════════════════════════════════ -->
+    <section class="page-section">
       <div class="section-hd">
-        <h2 class="section-title">Live Positions</h2>
+        <h2 class="section-title">Open Positions</h2>
         <span class="section-chip" id="livePositionsBadge">Loading…</span>
       </div>
-      <p class="section-sub">
-        Active bets on Betfair Exchange. Football is live (real money, delay key active).
-        Tennis is in paper mode — tracked and evaluated pre-live.
-      </p>
       <div class="positions-grid" id="liveBetsGrid">
         <div class="bets-empty">Loading positions…</div>
       </div>
     </section>
 
-    <!-- ═══ LIVE DESKS ════════════════════════════════════════════════════════ -->
+    <!-- ═══ UNIFIED SPORTS DESK ═══════════════════════════════════════════ -->
     <section class="page-section">
       <div class="section-hd">
-        <h2 class="section-title">Live Desks</h2>
-        <span class="section-chip">2 active</span>
+        <h2 class="section-title">Sports AI System</h2>
+        <span class="section-chip">Football · Tennis</span>
       </div>
 
-      <div class="desks-grid">
-
-        <!-- FOOTBALL -->
-        <article class="desk desk-blue">
-          <div class="desk-top">
-            <div class="desk-id">
-              <div class="desk-num">01</div>
-              <div>
-                <div class="desk-cat">Prediction Markets</div>
-                <h3 class="desk-name">Football Betting</h3>
-              </div>
+      <article class="desk-card">
+        <div class="desk-card-inner">
+          <div class="desk-card-hd">
+            <div>
+              <div class="desk-card-eyebrow">⚽ Football &nbsp;·&nbsp; 🎾 Tennis &nbsp;·&nbsp; Betfair Exchange</div>
+              <h3 class="desk-card-title">One platform. Every edge.</h3>
             </div>
-            <span class="desk-badge" id="sportsBadge">CHECKING</span>
+            <div class="desk-badge-area">
+              <span class="desk-status-dot" id="deskStatusDot"></span>
+              <span class="desk-status-label" id="deskStatusLabel">Checking…</span>
+              <span class="desk-mode-badge" id="sportsMode">—</span>
+            </div>
           </div>
 
-          <p class="desk-desc">
-            Betfair Exchange execution driven by Dixon-Coles Poisson model,
-            Pi Rating, xG, conformal intervals, fractional Kelly sizing,
-            paper/live gate and full settlement loop.
+          <p class="desk-card-desc">
+            AI agents scan thousands of matches every day to find where the market's odds are wrong.
+            When edge is found, bets are placed automatically — sized by risk, tracked in real time.
+            Football runs live on Betfair. Tennis signals are tracked and ready to go live.
           </p>
 
-          <div class="desk-metrics">
-            <div class="dmetric">
-              <span>Agent Health</span>
-              <strong id="sportsHealth">—</strong>
-            </div>
-            <div class="dmetric">
-              <span>Total Bets</span>
+          <div class="desk-metrics-row">
+            <div class="dsk-metric">
               <strong id="sportsBets">—</strong>
+              <span>Total Bets</span>
             </div>
-            <div class="dmetric">
-              <span>P&amp;L</span>
-              <strong id="sportsPnl">—</strong>
+            <div class="dsk-metric">
+              <strong id="deskWinRate">—</strong>
+              <span>Win Rate</span>
             </div>
-            <div class="dmetric">
-              <span>Mode</span>
-              <strong id="sportsMode">Paper Gate</strong>
+            <div class="dsk-metric">
+              <strong class="positive" id="sportsPnl">—</strong>
+              <span>Net P&L</span>
             </div>
-          </div>
-
-          <div class="agent-row" id="sportsAgentBar">
-            <span class="agent-row-label">Agents</span>
-          </div>
-
-          <div class="desk-foot">
-            <a class="desk-btn desk-btn-blue" href="https://agentic-markets-roan.vercel.app" target="_blank" rel="noreferrer">Open Football Desk →</a>
-            <a class="desk-btn desk-btn-dim" href="https://agentic-markets-roan.vercel.app/api/health" target="_blank" rel="noreferrer">Health API</a>
-          </div>
-        </article>
-
-        <!-- TENNIS -->
-        <article class="desk desk-amber">
-          <div class="desk-top">
-            <div class="desk-id">
-              <div class="desk-num">02</div>
-              <div>
-                <div class="desk-cat">Prediction Markets</div>
-                <h3 class="desk-name">Tennis Betting</h3>
-              </div>
+            <div class="dsk-metric">
+              <strong id="kpiPredictions">—</strong>
+              <span>Predictions</span>
             </div>
-            <span class="desk-badge" id="tennisBadge">CHECKING</span>
-          </div>
-
-          <p class="desk-desc">
-            Betfair Exchange execution driven by Elo Surface model (clay/grass/hard),
-            fatigue adjustment, fractional Kelly sizing. 2,966 players bootstrapped from
-            Jeff Sackmann ATP/WTA data (2022-2025). Paper mode — settlement loop live,
-            Elo updating on every closed market.
-          </p>
-
-          <div class="desk-metrics">
-            <div class="dmetric">
-              <span>Agent Health</span>
-              <strong id="tennisHealth">—</strong>
-            </div>
-            <div class="dmetric">
-              <span>Value Bets</span>
+            <div class="dsk-metric">
               <strong id="tennisValueBets">—</strong>
+              <span>Tennis Signals</span>
             </div>
-            <div class="dmetric">
-              <span>Markets Live</span>
+            <div class="dsk-metric">
               <strong id="tennisMarketsLive">—</strong>
-            </div>
-            <div class="dmetric">
-              <span>Mode</span>
-              <strong id="tennisMode">Paper</strong>
+              <span>Live Markets</span>
             </div>
           </div>
 
-          <div class="rationale-box" id="tennisRationale">Loading tennis model status…</div>
-
-          <div class="desk-foot">
-            <a class="desk-btn desk-btn-amber" href="https://agentic-markets-roan.vercel.app" target="_blank" rel="noreferrer">Open Tennis Desk →</a>
-            <a class="desk-btn desk-btn-dim" href="https://agentic-markets-roan.vercel.app/api/tennis" target="_blank" rel="noreferrer">Tennis API</a>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- ═══ LIVE AGENT PIPELINE ═════════════════════════════════════════════ -->
-    <section class="page-section agent-pipeline-section">
-      <div class="section-hd">
-        <h2 class="section-title">Live Agent Pipeline</h2>
-        <span class="section-chip" id="agentPipelineChip">Loading…</span>
-      </div>
-      <p class="section-sub">
-        Each market runs 6 specialized AI agents in sequence — from raw data ingestion to exchange execution.
-        Status updates every 60s from live heartbeats.
-      </p>
-
-      <!-- Football Pipeline -->
-      <div class="pipeline-desk">
-        <div class="pipeline-desk-hd">
-          <span class="pipeline-desk-ico">⚽</span>
-          <span class="pipeline-desk-label">Football Desk</span>
-          <span class="pipeline-desk-badge" id="footballPipelineBadge">—</span>
-        </div>
-        <div class="agent-flow" id="footballAgentFlow">
-          <!-- Rendered by JS -->
-          <div class="agent-flow-skeleton">
-            <div class="ask"></div><div class="ask-arr"></div>
-            <div class="ask"></div><div class="ask-arr"></div>
-            <div class="ask"></div><div class="ask-arr"></div>
-            <div class="ask"></div><div class="ask-arr"></div>
-            <div class="ask"></div><div class="ask-arr"></div>
-            <div class="ask"></div>
+          <div class="desk-card-foot">
+            <a class="btn-primary" href="https://agentic-markets-roan.vercel.app" target="_blank" rel="noreferrer">
+              Open Trading Desk
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="btn-secondary" href="https://agentic-markets-roan.vercel.app" target="_blank" rel="noreferrer">
+              Tennis Signals →
+            </a>
           </div>
         </div>
-      </div>
-
-      <!-- Tennis Pipeline -->
-      <div class="pipeline-desk pipeline-desk-tennis">
-        <div class="pipeline-desk-hd">
-          <span class="pipeline-desk-ico">🎾</span>
-          <span class="pipeline-desk-label">Tennis Desk</span>
-          <span class="pipeline-desk-badge pipeline-desk-badge-amber" id="tennisPipelineBadge">—</span>
-        </div>
-        <div class="tennis-agent-grid" id="tennisAgentGrid">
-          <!-- Rendered by JS -->
-        </div>
-      </div>
+      </article>
     </section>
 
-    <!-- ═══ PIPELINE ══════════════════════════════════════════════════════════ -->
+    <!-- ═══ HOW IT WORKS ══════════════════════════════════════════════════ -->
     <section class="page-section">
       <div class="section-hd">
         <h2 class="section-title">How It Works</h2>
-        <span class="section-chip">Market Factory</span>
+        <span class="section-chip">Fully Automated</span>
       </div>
-      <p class="section-sub">
-        Every desk follows the same 5-stage pipeline. A new market is just a new data source plugging into this same engine — model, execution, risk and settlement come free.
-      </p>
+      <p class="section-sub">Every bet starts with data and ends with a result. Here's what happens in between.</p>
 
       <div class="pipeline">
-        <div class="pipe-step" data-n="1">
+        <div class="pipe-step">
           <div class="pipe-n">01</div>
           <div class="pipe-icon">📡</div>
-          <div class="pipe-name">Data Source</div>
-          <div class="pipe-desc">Real-time feeds, exchange APIs, web crawlers, historical datasets.</div>
-          <div class="pipe-tags">Betfair · Football-Data · Jeff Sackmann ATP/WTA · RapidAPI</div>
+          <div class="pipe-name">Collect</div>
+          <div class="pipe-desc">Live odds, team stats, historical results and player data are pulled from multiple sources every few minutes.</div>
         </div>
-
         <div class="pipe-conn" aria-hidden="true">
           <div class="conn-line"><div class="conn-dot"></div></div>
           <svg width="8" height="12" viewBox="0 0 8 12"><path d="M1 1l6 5-6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
         </div>
-
-        <div class="pipe-step" data-n="2">
+        <div class="pipe-step">
           <div class="pipe-n">02</div>
           <div class="pipe-icon">🧠</div>
-          <div class="pipe-name">Model Layer</div>
-          <div class="pipe-desc">Probability forecasts, value edge detection, uncertainty quantification.</div>
-          <div class="pipe-tags">Dixon-Coles · Pi Rating · xG · Conformal</div>
+          <div class="pipe-name">Predict</div>
+          <div class="pipe-desc">AI models calculate the true probability of each outcome — more accurately than what bookmaker odds imply.</div>
         </div>
-
         <div class="pipe-conn" aria-hidden="true">
           <div class="conn-line"><div class="conn-dot" style="animation-delay:-.5s"></div></div>
           <svg width="8" height="12" viewBox="0 0 8 12"><path d="M1 1l6 5-6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
         </div>
-
-        <div class="pipe-step" data-n="3">
+        <div class="pipe-step">
           <div class="pipe-n">03</div>
           <div class="pipe-icon">⚡</div>
-          <div class="pipe-name">Execution</div>
-          <div class="pipe-desc">Paper-first gate. Kelly sizing, slippage management, order routing.</div>
-          <div class="pipe-tags">Kelly · Paper Gate · Betfair API</div>
+          <div class="pipe-name">Find the Edge</div>
+          <div class="pipe-desc">When our probability beats the market by a meaningful margin, a value bet signal is generated automatically.</div>
         </div>
-
         <div class="pipe-conn" aria-hidden="true">
           <div class="conn-line"><div class="conn-dot" style="animation-delay:-1s"></div></div>
           <svg width="8" height="12" viewBox="0 0 8 12"><path d="M1 1l6 5-6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
         </div>
-
-        <div class="pipe-step" data-n="4">
+        <div class="pipe-step">
           <div class="pipe-n">04</div>
           <div class="pipe-icon">🛡️</div>
-          <div class="pipe-name">Risk Gate</div>
-          <div class="pipe-desc">Exposure caps, drawdown limits, kill switches. Nothing bypasses this layer.</div>
-          <div class="pipe-tags">Caps · Drawdown · Kill Switch</div>
+          <div class="pipe-name">Risk Check</div>
+          <div class="pipe-desc">Stake size, exposure limits and drawdown caps are calculated and applied before any bet is placed.</div>
         </div>
-
         <div class="pipe-conn" aria-hidden="true">
           <div class="conn-line"><div class="conn-dot" style="animation-delay:-1.5s"></div></div>
           <svg width="8" height="12" viewBox="0 0 8 12"><path d="M1 1l6 5-6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
         </div>
-
-        <div class="pipe-step" data-n="5">
+        <div class="pipe-step">
           <div class="pipe-n">05</div>
           <div class="pipe-icon">🔄</div>
-          <div class="pipe-name">Settlement</div>
-          <div class="pipe-desc">Outcome logging, P&L tracking, model retraining, learning loop.</div>
-          <div class="pipe-tags">PnL · Retraining · Telegram Alerts</div>
+          <div class="pipe-name">Execute & Learn</div>
+          <div class="pipe-desc">Bet is placed on Betfair, settled automatically, and the result feeds back to make the next prediction better.</div>
         </div>
       </div>
     </section>
 
-    <!-- ═══ OPS: ALERTS + RISK ════════════════════════════════════════════════ -->
-    <section class="page-section">
-      <div class="ops-grid">
-
-        <div class="glass-panel">
-          <div class="panel-hd">
-            <div>
-              <div class="panel-eyebrow">Operations</div>
-              <h3 class="panel-title">Live Exceptions</h3>
-            </div>
-            <span class="chip chip-amber" id="alertsBadge">Scanning</span>
-          </div>
-          <div id="alertsList" class="alerts-body">
-            <div class="alert-empty">
-              <span>✓</span>
-              Waiting for live status data…
-            </div>
-          </div>
-        </div>
-
-        <div class="glass-panel">
-          <div class="panel-hd">
-            <div>
-              <div class="panel-eyebrow">Shared Operating Layer</div>
-              <h3 class="panel-title">Risk &amp; Discipline</h3>
-            </div>
-            <span class="chip chip-green" id="disciplineBadge">Unified</span>
-          </div>
-          <div class="risk-cols">
-            <div>
-              <div class="risk-heading">Cross-Desk Rules</div>
-              <ul class="risk-ul">
-                <li>Paper-first until forward track record is readable</li>
-                <li>Every desk produces logs, outcomes, agent health and risk config</li>
-                <li>Risk is normalized across markets — never copied</li>
-                <li>Optimizers tighten automatically; open only on clean edge</li>
-              </ul>
-            </div>
-            <div>
-              <div class="risk-heading">Desk-Specific</div>
-              <ul class="risk-ul">
-                <li>Football: fractional Kelly, exposure cap, completeness gate, drawdown lock</li>
-                <li>Tennis: quarter-Kelly sizing, 4% edge threshold, 12% monthly drawdown limit</li>
-                <li>New desks: require data source, model, risk gate and settlement before go-live</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ═══ MARKET ROADMAP ═══════════════════════════════════════════════════ -->
+    <!-- ═══ WHAT'S NEXT ═══════════════════════════════════════════════════ -->
     <section class="page-section page-section-last">
       <div class="section-hd">
         <h2 class="section-title">What's Next</h2>
-        <span class="section-chip">Market Roadmap</span>
+        <span class="section-chip">Roadmap</span>
       </div>
       <p class="section-sub">
-        Every prediction market worth trading. Each module plugs into the same OS — same pipeline, same risk layer, different edge.
+        Every prediction market worth trading. Each one plugs into the same system — same edge-finding logic, different sport.
       </p>
 
       <div class="roadmap-grid">
         <div class="rmap-card">
           <div class="rmap-icon">📊</div>
           <div class="rmap-name">Polymarket</div>
-          <div class="rmap-desc" id="market-polymarket">Politics, crypto, macro events, protocol launches</div>
+          <div class="rmap-desc" id="market-polymarket">Politics, crypto, macro events — the world's biggest prediction exchange.</div>
           <div class="rmap-tag">High Priority</div>
         </div>
         <div class="rmap-card">
           <div class="rmap-icon">🏀</div>
           <div class="rmap-name">NBA</div>
-          <div class="rmap-desc" id="market-nba">Player impact, totals, injuries, line movement</div>
+          <div class="rmap-desc" id="market-nba">Player performance, totals, injuries and line movement — deep data, high liquidity.</div>
           <div class="rmap-tag">Sports</div>
         </div>
         <div class="rmap-card">
           <div class="rmap-icon">🏎️</div>
           <div class="rmap-name">F1 / MotoGP</div>
-          <div class="rmap-desc">Qualifying, weather, grid position, reliability factors</div>
+          <div class="rmap-desc">Qualifying, weather, grid position and reliability — race prediction with real-time telemetry.</div>
           <div class="rmap-tag">Sports</div>
         </div>
         <div class="rmap-card">
           <div class="rmap-icon">📈</div>
           <div class="rmap-name">Macro Events</div>
-          <div class="rmap-desc" id="market-macro">CPI, rates, elections, Fed pricing, crypto correlation</div>
+          <div class="rmap-desc" id="market-macro">Central bank decisions, inflation, elections — financial prediction markets.</div>
           <div class="rmap-tag">Markets</div>
         </div>
         <div class="rmap-card">
           <div class="rmap-icon">♠️</div>
-          <div class="rmap-name">Poker / Casino AI</div>
-          <div class="rmap-desc">Decision engines, bankroll simulation, exploit detection</div>
+          <div class="rmap-name">Poker / Games</div>
+          <div class="rmap-desc">Decision engines, bankroll simulation and exploit detection across game theory markets.</div>
           <div class="rmap-tag">Games</div>
         </div>
       </div>
@@ -513,8 +268,8 @@
   </main>
 
   <footer class="footer">
-    <div class="foot-brand">Agentic Markets OS</div>
-    <div class="foot-meta">Multi-Agent AI System · Football · Tennis · v2.0</div>
+    <div class="foot-brand">Agentic Markets</div>
+    <div class="foot-meta">Multi-Agent AI · Football · Tennis · v2.1</div>
     <div class="foot-meta">© Agentic Markets — Andrea &amp; Michele</div>
   </footer>
 
