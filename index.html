@@ -86,7 +86,7 @@
         </div>
         <h1 class="hero-h1">The AI pipeline<br>for prediction<br>markets.</h1>
         <p class="hero-p">
-          15 specialized agents predict, size and execute across football and tennis —
+          16 specialized agents predict, size and execute across football and tennis —
           Dixon-Coles, Elo surface models, Kelly sizing, Betfair execution, continuous learning.
           Same pipeline. Different edge. Every market.
         </p>
@@ -175,6 +175,21 @@
       </div>
     </div>
 
+    <!-- ═══ LIVE POSITIONS ══════════════════════════════════════════════════════ -->
+    <section class="page-section bets-section">
+      <div class="section-hd">
+        <h2 class="section-title">Live Positions</h2>
+        <span class="section-chip" id="livePositionsBadge">Loading…</span>
+      </div>
+      <p class="section-sub">
+        Active bets on Betfair Exchange. Football is live (real money, delay key active).
+        Tennis is in paper mode — tracked and evaluated pre-live.
+      </p>
+      <div class="positions-grid" id="liveBetsGrid">
+        <div class="bets-empty">Loading positions…</div>
+      </div>
+    </section>
+
     <!-- ═══ LIVE DESKS ════════════════════════════════════════════════════════ -->
     <section class="page-section">
       <div class="section-hd">
@@ -247,8 +262,9 @@
 
           <p class="desk-desc">
             Betfair Exchange execution driven by Elo Surface model (clay/grass/hard),
-            fatigue adjustment, fractional Kelly sizing. 1499 players bootstrapped from
-            Jeff Sackmann ATP/WTA data. Paper trading active.
+            fatigue adjustment, fractional Kelly sizing. 2,966 players bootstrapped from
+            Jeff Sackmann ATP/WTA data (2022-2025). Paper mode — settlement loop live,
+            Elo updating on every closed market.
           </p>
 
           <div class="desk-metrics">
@@ -466,12 +482,6 @@
           <div class="rmap-name">Polymarket</div>
           <div class="rmap-desc" id="market-polymarket">Politics, crypto, macro events, protocol launches</div>
           <div class="rmap-tag">High Priority</div>
-        </div>
-        <div class="rmap-card">
-          <div class="rmap-icon">🪙</div>
-          <div class="rmap-name">Meme Coin</div>
-          <div class="rmap-desc">DexScreener Solana scanner, on-chain intelligence, momentum scoring</div>
-          <div class="rmap-tag">Crypto</div>
         </div>
         <div class="rmap-card">
           <div class="rmap-icon">🏀</div>

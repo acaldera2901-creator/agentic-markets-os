@@ -1429,6 +1429,157 @@ body::before {
 .sc-green { color: var(--g) !important; border-color: rgba(74,222,128,.3) !important; background: rgba(74,222,128,.06) !important; }
 .sc-amber { color: var(--a) !important; border-color: rgba(251,191,36,.3)  !important; background: rgba(251,191,36,.06)  !important; }
 
+/* ── LIVE POSITIONS ──────────────────────────────────────────── */
+.bets-section { padding-top: 0; }
+
+.positions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 12px;
+}
+
+.bets-empty {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--tx3);
+  font-size: 13px;
+  border: 1px dashed var(--b1);
+  border-radius: var(--r12);
+}
+
+.bet-card {
+  background: var(--s1);
+  border: 1px solid var(--b1);
+  border-radius: var(--r12);
+  padding: 18px 20px;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+}
+
+.bet-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.4);
+}
+
+.bet-card.bet-live { border-left: 3px solid var(--g); }
+.bet-card.bet-won  { border-left: 3px solid var(--c); opacity: .75; }
+.bet-card.bet-lost { border-left: 3px solid var(--r); opacity: .75; }
+
+.bet-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.bet-league {
+  font-family: var(--fm);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--c);
+}
+
+.bet-status-badge {
+  font-family: var(--fm);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+.bet-status-badge.pending { color: var(--g); background: rgba(74,222,128,.1);   border: 1px solid rgba(74,222,128,.35); }
+.bet-status-badge.won     { color: var(--c); background: rgba(34,211,238,.1);   border: 1px solid rgba(34,211,238,.35); }
+.bet-status-badge.lost    { color: var(--r); background: rgba(248,113,113,.1);  border: 1px solid rgba(248,113,113,.3); }
+
+.bet-match {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  margin-bottom: 10px;
+  line-height: 1.3;
+  color: var(--tx);
+}
+
+.bet-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.bet-sel {
+  font-family: var(--fm);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--tx);
+  background: var(--s2);
+  border: 1px solid var(--b1);
+  border-radius: 5px;
+  padding: 2px 8px;
+  text-transform: uppercase;
+}
+
+.bet-odds {
+  font-family: var(--fm);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--a);
+}
+
+.bet-stake {
+  font-family: var(--fm);
+  font-size: 11px;
+  color: var(--tx2);
+  margin-left: auto;
+}
+
+.bet-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--b0);
+}
+
+.bet-id-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--tx3);
+  flex-shrink: 0;
+}
+
+.bet-id-val {
+  font-family: var(--fm);
+  font-size: 10px;
+  color: var(--tx3);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bet-time {
+  font-family: var(--fm);
+  font-size: 10px;
+  color: var(--tx3);
+  margin-left: auto;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── TENNIS AGENT GRID ──────────────────────────────────────── */
+.tennis-agent-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+
 /* Arrow connector between football cards */
 .flow-arrow {
   flex-shrink: 0;
@@ -1504,11 +1655,14 @@ body::before {
 .acs-dot { flex-shrink: 0; }
 
 @media (max-width: 1000px) {
-  .crypto-agent-grid { grid-template-columns: repeat(2, 1fr); }
-  .agent-flow-inner { padding-bottom: 8px; }
+  .crypto-agent-grid   { grid-template-columns: repeat(2, 1fr); }
+  .tennis-agent-grid   { grid-template-columns: repeat(3, 1fr); }
+  .agent-flow-inner    { padding-bottom: 8px; }
 }
 
 @media (max-width: 600px) {
-  .crypto-agent-grid { grid-template-columns: 1fr; }
+  .crypto-agent-grid   { grid-template-columns: 1fr; }
+  .tennis-agent-grid   { grid-template-columns: repeat(2, 1fr); }
+  .positions-grid      { grid-template-columns: 1fr; }
   .pipeline-desk { padding: 16px; }
 }

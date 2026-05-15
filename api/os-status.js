@@ -106,11 +106,30 @@ module.exports = async function handler(req, res) {
 
   /* ── Sports summary ──────────────────────────── */
   const betsPlaced  = betData?.summary?.total_bets ?? history?.stats?.bets_placed ?? 0;
-  const totalReturn = Number(history?.stats?.total_return ?? 0);
+  const totalReturn = Number(betData?.summary?.pnl ?? history?.stats?.total_return ?? 0);
   const betsPending = betData?.summary?.pending ?? 0;
   const sportsMode  = health?.mode ?? "paper";
   const sportsHealth = health?.status === "ok" ? "ok"
     : offline > 0 ? "degraded" : "warning";
+
+  /* ── Live bets (non-paper, ordered by placed_at DESC) ─────── */
+  const liveBets = (betData?.bets ?? [])
+    .filter(b => b.paper === false || b.paper === "false" || b.paper === null)
+    .slice(0, 10)
+    .map(b => ({
+      id:               b.id,
+      home_team:        b.home_team,
+      away_team:        b.away_team,
+      league:           b.league,
+      selection:        b.selection,
+      odds:             b.odds,
+      stake:            b.stake,
+      paper:            b.paper,
+      status:           b.status,
+      profit_loss:      b.profit_loss,
+      betfair_bet_id:   b.betfair_bet_id,
+      placed_at:        b.placed_at,
+    }));
 
   /* ── Tennis ──────────────────────────────────── */
   const tennisMatches   = tennisData?.matches?.length ?? 0;
@@ -148,6 +167,7 @@ module.exports = async function handler(req, res) {
       summary: { total_bets: betsPlaced, pending_bets: betsPending, pnl: totalReturn, predictions: preds?.count ?? 0 },
       mode: sportsMode,
       agentList,
+      live_bets: liveBets,
     },
 
     tennis: {

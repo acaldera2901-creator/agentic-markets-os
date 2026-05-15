@@ -14,8 +14,9 @@ const TENNIS_PIPELINE = [
   { key: "TennisDataCollectorAgent", label: "Data Collector", role: "Betfair tennis markets · 60+ events",  icon: "📡" },
   { key: "TennisModelAgent",         label: "Model",          role: "Elo Surface v2 · clay/grass/hard",     icon: "🧠" },
   { key: "TennisAnalystAgent",       label: "Analyst",        role: "Value edge · 4% threshold",            icon: "📊" },
-  { key: "TennisRiskManagerAgent",   label: "Risk Manager",   role: "Kelly f=0.25 · 3% cap · drawdown",    icon: "🛡️" },
+  { key: "TennisRiskManagerAgent",   label: "Risk Manager",   role: "Kelly f=0.25 · 20% cap · drawdown",   icon: "🛡️" },
   { key: "TennisTraderAgent",        label: "Trader",         role: "Paper bets · Neon DB · Telegram",      icon: "💱" },
+  { key: "TennisSettlementAgent",    label: "Settlement",     role: "Elo update · P&L · win/loss loop",     icon: "🔄" },
 ];
 
 const SPORTS_URL = "https://agentic-markets-roan.vercel.app";
@@ -120,7 +121,7 @@ function renderFootballPipeline(agentList) {
     badge.className = "pipeline-desk-badge " + (alive === total ? "pdg-green" : alive > 0 ? "pdg-amber" : "pdg-red");
   }
   if (chip) {
-    chip.textContent = `${alive}/${total} football · 5 tennis`;
+    chip.textContent = `${alive}/${total} football · 6 tennis`;
     chip.className   = "section-chip " + (alive === total ? "sc-green" : "sc-amber");
   }
 
@@ -158,10 +159,11 @@ function renderTennisPipeline(tennisOk) {
   const badge = $("tennisPipelineBadge");
   if (!grid) return;
 
+  const total = TENNIS_PIPELINE.length;
   const st = tennisOk ? statusMeta("alive") : statusMeta("offline");
 
   if (badge) {
-    badge.textContent = tennisOk ? "5/5 alive" : "Offline";
+    badge.textContent = tennisOk ? `${total}/${total} alive` : "Offline";
     badge.className   = "pipeline-desk-badge " + (tennisOk ? "pdg-amber" : "pdg-red");
   }
 
@@ -308,6 +310,86 @@ function renderAlerts(status) {
     </div>`).join("");
 }
 
+// ── Render: Live Positions ────────────────────────────────────
+function fmtBetTime(placedAt) {
+  if (!placedAt) return "";
+  try {
+    const diff = Math.round((Date.now() - new Date(placedAt)) / 60000);
+    if (diff < 1)   return "just now";
+    if (diff < 60)  return `${diff}m ago`;
+    return `${Math.floor(diff / 60)}h ago`;
+  } catch { return ""; }
+}
+
+function selLabel(sel) {
+  if (!sel) return "?";
+  const s = String(sel).toLowerCase();
+  if (s === "home") return "HOME";
+  if (s === "draw") return "DRAW";
+  if (s === "away") return "AWAY";
+  return String(sel).toUpperCase();
+}
+
+function renderLiveBets(status) {
+  const grid  = $("liveBetsGrid");
+  const badge = $("livePositionsBadge");
+  if (!grid) return;
+
+  const all     = status.sports?.live_bets ?? [];
+  const pending = all.filter(b => b.status === "pending");
+  const settled = all.filter(b => b.status === "won" || b.status === "lost").slice(0, 3);
+  const display = [...pending, ...settled];
+
+  if (badge) {
+    badge.textContent = pending.length ? `${pending.length} open` : "No open bets";
+    badge.className   = "section-chip " + (pending.length ? "sc-green" : "sc-amber");
+  }
+
+  if (!display.length) {
+    grid.innerHTML = `<div class="bets-empty">No live football positions at the moment.</div>`;
+    return;
+  }
+
+  grid.innerHTML = display.map(bet => {
+    const isPending = bet.status === "pending";
+    const isWon     = bet.status === "won";
+    const cardCls   = isPending ? "bet-live" : isWon ? "bet-won" : "bet-lost";
+    const bdgCls    = isPending ? "pending"  : isWon ? "won"     : "lost";
+    const bdgTxt    = isPending ? "LIVE"     : isWon ? "WON"     : "LOST";
+
+    const home   = bet.home_team   || "?";
+    const away   = bet.away_team   || "?";
+    const league = bet.league      || "?";
+    const sel    = selLabel(bet.selection);
+    const odds   = Number(bet.odds).toFixed(2);
+    const stake  = Number(bet.stake).toFixed(2);
+    const betId  = bet.betfair_bet_id || "paper";
+    const time   = fmtBetTime(bet.placed_at);
+    const pnl    = bet.profit_loss != null
+      ? (Number(bet.profit_loss) >= 0 ? `+€${Number(bet.profit_loss).toFixed(2)}` : `-€${Math.abs(Number(bet.profit_loss)).toFixed(2)}`)
+      : "";
+
+    return `
+      <div class="bet-card ${cardCls}">
+        <div class="bet-card-top">
+          <span class="bet-league">${league}</span>
+          <span class="bet-status-badge ${bdgCls}">${bdgTxt}</span>
+        </div>
+        <div class="bet-match">${home} vs ${away}</div>
+        <div class="bet-meta-row">
+          <span class="bet-sel">${sel}</span>
+          <span class="bet-odds">@ ${odds}</span>
+          <span class="bet-stake">€${stake}${pnl ? ` · ${pnl}` : ""}</span>
+        </div>
+        <div class="bet-footer">
+          <span class="bet-id-label">BetID</span>
+          <span class="bet-id-val">${betId}</span>
+          <span class="bet-time">${time}</span>
+        </div>
+      </div>`;
+  }).join("");
+}
+
 // ── Render: Market roadmap ─────────────────────────────────────
 function renderMarkets(status) {
   for (const m of (status.os?.markets || [])) {
@@ -351,6 +433,7 @@ async function refreshAll() {
     renderAgentPipeline(status);
     renderAlerts(status);
     renderMarkets(status);
+    renderLiveBets(status);
   } catch (err) {
     console.error("[OS] status fetch failed:", err);
     const osEl = $("osStatus");
