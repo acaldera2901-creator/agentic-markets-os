@@ -5,37 +5,37 @@
 
 /* ── TOKENS ─────────────────────────────────────────────────── */
 :root {
-  --bg:   #040710;
-  --bg2:  #060d18;
-  --bg3:  #0a1525;
+  --bg:   #020407;
+  --bg2:  #060C18;
+  --bg3:  #0A1525;
 
   /* Surfaces */
-  --s0: rgba(255,255,255,.025);
-  --s1: rgba(255,255,255,.045);
-  --s2: rgba(255,255,255,.07);
+  --s0: rgba(255,255,255,.028);
+  --s1: rgba(255,255,255,.048);
+  --s2: rgba(255,255,255,.075);
 
   /* Borders */
-  --b0: rgba(255,255,255,.06);
+  --b0: rgba(255,255,255,.055);
   --b1: rgba(255,255,255,.10);
   --b2: rgba(255,255,255,.18);
 
   /* Text */
-  --tx:  #e2e8f0;
-  --tx2: #94a3b8;
-  --tx3: #475569;
+  --tx:  #F0F4FF;
+  --tx2: #8BA3C0;
+  --tx3: #3D5470;
 
   /* Accents */
-  --c:  #22d3ee;   /* cyan  */
-  --g:  #4ade80;   /* green */
-  --a:  #fbbf24;   /* amber */
-  --r:  #f87171;   /* red   */
-  --v:  #a78bfa;   /* violet*/
+  --c:  #00CFFF;   /* electric cyan */
+  --g:  #00E87A;   /* neon green    */
+  --a:  #FFB600;   /* amber         */
+  --r:  #FF2D55;   /* hot red       */
+  --v:  #9B5FFF;   /* violet        */
 
   /* Glow */
-  --cg: rgba(34,211,238,.15);
-  --gg: rgba(74,222,128,.15);
-  --ag: rgba(251,191,36,.12);
-  --rg: rgba(248,113,113,.12);
+  --cg: rgba(0,207,255,.14);
+  --gg: rgba(0,232,122,.14);
+  --ag: rgba(255,182,0,.12);
+  --rg: rgba(255,45,85,.12);
 
   /* Fonts */
   --f:  'Space Grotesk', system-ui, sans-serif;
@@ -285,11 +285,11 @@ body::before {
 }
 
 .hero-h1 {
-  font-size: clamp(40px, 5.5vw, 68px);
+  font-size: clamp(42px, 5.5vw, 72px);
   font-weight: 700;
-  line-height: 1.06;
-  letter-spacing: -.04em;
-  margin-bottom: 22px;
+  line-height: 1.04;
+  letter-spacing: -.045em;
+  margin-bottom: 24px;
 }
 
 .hero-p {
@@ -355,11 +355,12 @@ body::before {
 
 .os-card-val {
   font-family: var(--fm);
-  font-size: 44px;
+  font-size: 48px;
   font-weight: 700;
   line-height: 1;
   color: var(--g);
   margin-bottom: 10px;
+  letter-spacing: -0.03em;
   transition: color .3s;
 }
 
@@ -470,11 +471,13 @@ body::before {
 .kpi-v {
   display: block;
   font-family: var(--fm);
-  font-size: 26px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--tx);
   line-height: 1;
   margin-bottom: 6px;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
 }
 
 .kpi-s {
@@ -1187,9 +1190,9 @@ body::before {
 }
 
 /* ── GLOBAL STATUS ────────────────────────────────────────────── */
-.positive { color: var(--g) !important; }
-.negative { color: var(--r) !important; }
-.neutral  { color: var(--a) !important; }
+.positive { color: #00E87A !important; }
+.negative { color: #FF2D55 !important; }
+.neutral  { color: #FFB600 !important; }
 
 /* Flash on update */
 @keyframes val-flash {
@@ -1339,25 +1342,26 @@ body::before {
 /* Agent card (football pipeline) */
 .agent-card {
   flex-shrink: 0;
-  width: 148px;
+  width: 152px;
   background: var(--s1);
-  border: 1px solid var(--b1);
+  border: 1px solid var(--b0);
   border-radius: var(--r8);
   padding: 14px 14px 12px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  transition: border-color .2s, background .2s;
+  transition: border-color .2s, background .2s, transform .15s;
 }
 
 .agent-card:hover {
   border-color: var(--b2);
   background: var(--s2);
+  transform: translateY(-2px);
 }
 
-.agent-card.alive  { border-color: rgba(74,222,128,.2);  }
-.agent-card.stale  { border-color: rgba(251,191,36,.2);  }
-.agent-card.offline{ border-color: rgba(248,113,113,.2); }
+.agent-card.alive  { border-color: rgba(0,232,122,.22);  }
+.agent-card.stale  { border-color: rgba(255,182,0,.22);  }
+.agent-card.offline{ border-color: rgba(255,45,85,.18); }
 
 .ac-top {
   display: flex;
@@ -1452,18 +1456,34 @@ body::before {
   background: var(--s1);
   border: 1px solid var(--b1);
   border-radius: var(--r12);
-  padding: 18px 20px;
+  padding: 20px 22px;
   transition: border-color .2s, transform .2s, box-shadow .2s;
+  position: relative;
+  overflow: hidden;
 }
+
+.bet-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(90deg, var(--g), var(--c));
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+.bet-card.bet-live::before { opacity: 1; }
 
 .bet-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(0,0,0,.4);
+  border-color: var(--b2);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0,0,0,.5);
 }
 
-.bet-card.bet-live { border-left: 3px solid var(--g); }
-.bet-card.bet-won  { border-left: 3px solid var(--c); opacity: .75; }
-.bet-card.bet-lost { border-left: 3px solid var(--r); opacity: .75; }
+.bet-card.bet-live { border-left: 3px solid var(--g); border-color: rgba(0,232,122,.2); }
+.bet-card.bet-won  { border-left: 3px solid var(--c); opacity: .8; }
+.bet-card.bet-lost { border-left: 3px solid var(--r); opacity: .8; }
 
 .bet-card-top {
   display: flex;
@@ -1495,9 +1515,9 @@ body::before {
 .bet-status-badge.lost    { color: var(--r); background: rgba(248,113,113,.1);  border: 1px solid rgba(248,113,113,.3); }
 
 .bet-match {
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: -.01em;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -.015em;
   margin-bottom: 10px;
   line-height: 1.3;
   color: var(--tx);
@@ -1525,9 +1545,10 @@ body::before {
 
 .bet-odds {
   font-family: var(--fm);
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--a);
+  letter-spacing: -0.02em;
 }
 
 .bet-stake {
