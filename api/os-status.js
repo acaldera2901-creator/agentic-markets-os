@@ -51,8 +51,16 @@ function scoreAndAlerts(health, preds, tennisData) {
   }
 
   /* ── Tennis block (50 pts) ────────────────────── */
-  if (!tennisData?.matches) {
-    alerts.push({ desk: "Tennis", message: "Tennis API unreachable", level: "critical" });
+  const tSource = tennisData?.source ?? null;
+  const tennisReal = tSource === "redis" || tSource === "database";
+
+  if (!tennisData?.matches || !tennisReal) {
+    if (!tennisData?.matches) {
+      alerts.push({ desk: "Tennis", message: "Tennis API unreachable", level: "critical" });
+    } else {
+      // placeholder data — pipeline not running
+      alerts.push({ desk: "Tennis", message: "Tennis pipeline offline — no real data", level: "warning" });
+    }
   } else {
     const tennisMatches   = tennisData.matches?.length ?? 0;
     const tennisValueBets = tennisData.summary?.value_bets ?? 0;
@@ -91,8 +99,10 @@ module.exports = async function handler(req, res) {
     safeFetch(`${SPORTS_URL}/api/tennis`),
   ]);
 
-  const sportsOk = Boolean(health?.status && health.status !== "error");
-  const tennisOk = Boolean(tennisData?.matches);
+  const sportsOk   = Boolean(health?.status && health.status !== "error");
+  const tennisSource = tennisData?.source ?? null;
+  // placeholder = hardcoded fake data, not real pipeline output
+  const tennisOk   = tennisSource === "redis" || tennisSource === "database";
 
   /* ── Sports agents ───────────────────────────── */
   const agentList = (health?.agents ?? []).map(a => ({
@@ -132,9 +142,10 @@ module.exports = async function handler(req, res) {
     }));
 
   /* ── Tennis ──────────────────────────────────── */
-  const tennisMatches   = tennisData?.matches?.length ?? 0;
-  const tennisSummary   = tennisData?.summary  ?? {};
-  const tennisApiStatus = tennisData?.status   ?? "offline";
+  const tennisIsReal    = tennisSource === "redis" || tennisSource === "database";
+  const tennisMatches   = tennisIsReal ? (tennisData?.matches?.length ?? 0) : 0;
+  const tennisSummary   = tennisIsReal ? (tennisData?.summary ?? {}) : { value_bets: 0, markets_active: 0 };
+  const tennisApiStatus = tennisIsReal ? (tennisData?.status ?? "offline") : "offline";
 
   /* ── System score + alerts ───────────────────── */
   const { score: systemScore, alerts } = scoreAndAlerts(health, preds, tennisData);
