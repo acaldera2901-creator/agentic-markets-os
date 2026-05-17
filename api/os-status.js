@@ -91,12 +91,13 @@ module.exports = async function handler(req, res) {
   }
 
   /* ── Parallel fetch from both desks ──────────── */
-  const [health, preds, history, betData, tennisData] = await Promise.all([
+  const [health, preds, history, betData, tennisData, tennisBetsData] = await Promise.all([
     safeFetch(`${SPORTS_URL}/api/health`),
     safeFetch(`${SPORTS_URL}/api/predictions`),
     safeFetch(`${SPORTS_URL}/api/history`),
     safeFetch(`${SPORTS_URL}/api/data`),
     safeFetch(`${SPORTS_URL}/api/tennis`),
+    safeFetch(`${SPORTS_URL}/api/tennis-bets`),
   ]);
 
   const sportsOk   = Boolean(health?.status && health.status !== "error");
@@ -116,8 +117,9 @@ module.exports = async function handler(req, res) {
 
   /* ── Sports summary ──────────────────────────── */
   const betsPlaced  = betData?.summary?.total_bets ?? history?.stats?.bets_placed ?? 0;
-  const totalReturn = Number(betData?.summary?.pnl ?? history?.stats?.total_return ?? 0);
-  const betsPending = betData?.summary?.pending ?? 0;
+  const tennisPnl   = Number(tennisBetsData?.summary?.pnl ?? 0);
+  const totalReturn = Number(betData?.summary?.pnl ?? history?.stats?.total_return ?? 0) + tennisPnl;
+  const betsPending = (betData?.summary?.pending ?? 0) + (tennisBetsData?.summary?.pending ?? 0);
   const sportsMode  = health?.mode ?? "paper";
   const sportsHealth = health?.status === "ok" ? "ok"
     : offline > 0 ? "degraded" : "warning";
